@@ -4,8 +4,8 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int actualStorageSize = 0;
+    private Resume[] storage = new Resume[10000];
+    private int actualStorageSize = 0;
 
     void clear() {
         for (int i = 0; i < actualStorageSize; i++) {
@@ -15,11 +15,48 @@ public class ArrayStorage {
     }
 
     void save(Resume resume) {
-        storage[actualStorageSize] = resume;
-        actualStorageSize++;
+        if (actualStorageSize == storage.length) {
+            System.out.println("Error! Storage is full!");
+        } else if (checkIsPresent(resume)) {
+            System.out.println("Error! This resume is already in the storage!");
+        } else {
+            storage[actualStorageSize] = resume;
+            actualStorageSize++;
+        }
+    }
+
+    void update(Resume resume) {
+        if (checkIsPresent(resume)) {
+            storage[findResumePointerByUuid(resume.uuid)] = resume;
+        } else {
+            System.out.println("Error! This resume is not exist!");
+        }
     }
 
     Resume get(String uuid) {
+        int pointer = findResumePointerByUuid(uuid);
+        if (pointer == -1) {
+            System.out.println("Error! This resume is not exist!");
+        }
+        return pointer == -1 ? null : storage[pointer];
+    }
+
+    void delete(String uuid) {
+        int pointer = findResumePointerByUuid(uuid);
+        if (pointer != -1) {
+            storage[pointer] = storage[actualStorageSize - 1];
+            storage[actualStorageSize - 1] = null;
+            actualStorageSize--;
+        } else {
+            System.out.println("Error! This resume is not exist!");
+        }
+    }
+
+    private boolean checkIsPresent(Resume resume) {
+        return findResumePointerByUuid(resume.uuid) != -1;
+    }
+
+    private int findResumePointerByUuid(String uuid) {
         int searchingResumePointer = -1;
         for (int i = 0; i < actualStorageSize; i++) {
             if (storage[i].uuid.equals(uuid)) {
@@ -27,20 +64,7 @@ public class ArrayStorage {
                 break;
             }
         }
-        return searchingResumePointer == -1 ? null : storage[searchingResumePointer];
-    }
-
-    void delete(String uuid) {
-        boolean rewritingFlag = false;
-        for (int i = 0; i < actualStorageSize; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                rewritingFlag = true;
-            }
-            if (rewritingFlag) {
-                storage[i] = storage[i + 1];
-            }
-        }
-        actualStorageSize--;
+        return searchingResumePointer;
     }
 
     /**
