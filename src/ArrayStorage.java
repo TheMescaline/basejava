@@ -17,17 +17,21 @@ public class ArrayStorage {
     void save(Resume resume) {
         if (actualStorageSize == storage.length) {
             System.out.println("Error! Storage is full!");
-        } else if (checkIsPresent(resume)) {
-            System.out.println("Error! This resume is already in the storage!");
         } else {
-            storage[actualStorageSize] = resume;
-            actualStorageSize++;
+            int pointer = findResumePointerByUuid(resume.uuid);
+            if (pointer != -1) {
+                System.out.println("Error! This resume is already in the storage!");
+            } else {
+                storage[actualStorageSize] = resume;
+                actualStorageSize++;
+            }
         }
     }
 
     void update(Resume resume) {
-        if (checkIsPresent(resume)) {
-            storage[findResumePointerByUuid(resume.uuid)] = resume;
+        int pointer = findResumePointerByUuid(resume.uuid);
+        if (pointer != -1) {
+            storage[pointer] = resume;
         } else {
             System.out.println("Error! This resume is not exist!");
         }
@@ -50,10 +54,6 @@ public class ArrayStorage {
         } else {
             System.out.println("Error! This resume is not exist!");
         }
-    }
-
-    private boolean checkIsPresent(Resume resume) {
-        return findResumePointerByUuid(resume.uuid) != -1;
     }
 
     private int findResumePointerByUuid(String uuid) {
