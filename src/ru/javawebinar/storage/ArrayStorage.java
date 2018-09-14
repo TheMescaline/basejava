@@ -7,21 +7,8 @@ import ru.javawebinar.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index != -1) {
-            storage[index] = storage[actualStorageSize - 1];
-            storage[actualStorageSize - 1] = null;
-            actualStorageSize--;
-        } else {
-            System.out.println("Error! This resume is not exist!");
-        }
-    }
-
-    @Override
     protected void insert(Resume resume, int index) {
         storage[actualStorageSize] = resume;
-        actualStorageSize++;
     }
 
     @Override
