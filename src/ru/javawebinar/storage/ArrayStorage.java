@@ -21,7 +21,7 @@ public class ArrayStorage {
         if (actualStorageSize == storage.length) {
             System.out.println("Error! Storage is full!");
         } else {
-            int pointer = findResumePointerByUuid(resume.getUuid());
+            int pointer = getIndex(resume.getUuid());
             if (pointer != -1) {
                 System.out.println("Error! This resume is already in the storage!");
             } else {
@@ -32,7 +32,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int pointer = findResumePointerByUuid(resume.getUuid());
+        int pointer = getIndex(resume.getUuid());
         if (pointer != -1) {
             storage[pointer] = resume;
         } else {
@@ -41,7 +41,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int pointer = findResumePointerByUuid(uuid);
+        int pointer = getIndex(uuid);
         if (pointer == -1) {
             System.out.println("Error! This resume is not exist!");
         }
@@ -49,7 +49,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int pointer = findResumePointerByUuid(uuid);
+        int pointer = getIndex(uuid);
         if (pointer != -1) {
             storage[pointer] = storage[actualStorageSize - 1];
             storage[actualStorageSize - 1] = null;
@@ -59,7 +59,7 @@ public class ArrayStorage {
         }
     }
 
-    private int findResumePointerByUuid(String uuid) {
+    private int getIndex(String uuid) {
         int searchingResumePointer = -1;
         for (int i = 0; i < actualStorageSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
