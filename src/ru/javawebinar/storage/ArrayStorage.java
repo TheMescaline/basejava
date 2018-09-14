@@ -1,3 +1,6 @@
+package ru.javawebinar.storage;
+
+import ru.javawebinar.model.Resume;
 import java.util.Arrays;
 
 /**
@@ -7,18 +10,18 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int actualStorageSize = 0;
 
-    void clear() {
+    public void clear() {
         for (int i = 0; i < actualStorageSize; i++) {
             storage[i] = null;
         }
         actualStorageSize = 0;
     }
 
-    void save(Resume resume) {
+    public void save(Resume resume) {
         if (actualStorageSize == storage.length) {
             System.out.println("Error! Storage is full!");
         } else {
-            int pointer = findResumePointerByUuid(resume.uuid);
+            int pointer = findResumePointerByUuid(resume.getUuid());
             if (pointer != -1) {
                 System.out.println("Error! This resume is already in the storage!");
             } else {
@@ -28,8 +31,8 @@ public class ArrayStorage {
         }
     }
 
-    void update(Resume resume) {
-        int pointer = findResumePointerByUuid(resume.uuid);
+    public void update(Resume resume) {
+        int pointer = findResumePointerByUuid(resume.getUuid());
         if (pointer != -1) {
             storage[pointer] = resume;
         } else {
@@ -37,7 +40,7 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int pointer = findResumePointerByUuid(uuid);
         if (pointer == -1) {
             System.out.println("Error! This resume is not exist!");
@@ -45,7 +48,7 @@ public class ArrayStorage {
         return pointer == -1 ? null : storage[pointer];
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int pointer = findResumePointerByUuid(uuid);
         if (pointer != -1) {
             storage[pointer] = storage[actualStorageSize - 1];
@@ -59,7 +62,7 @@ public class ArrayStorage {
     private int findResumePointerByUuid(String uuid) {
         int searchingResumePointer = -1;
         for (int i = 0; i < actualStorageSize; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 searchingResumePointer = i;
                 break;
             }
@@ -70,11 +73,11 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, actualStorageSize);
     }
 
-    int size() {
+    public int size() {
         return actualStorageSize;
     }
 }
