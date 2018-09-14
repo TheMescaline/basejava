@@ -6,19 +6,18 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+public class ArrayStorage implements Storage{
+    private static final int STORAGE_LIMIT = 10000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int actualStorageSize = 0;
 
     public void clear() {
-        for (int i = 0; i < actualStorageSize; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, 0, actualStorageSize, null);
         actualStorageSize = 0;
     }
 
     public void save(Resume resume) {
-        if (actualStorageSize == storage.length) {
+        if (actualStorageSize == STORAGE_LIMIT) {
             System.out.println("Error! Storage is full!");
         } else {
             int pointer = getIndex(resume.getUuid());
