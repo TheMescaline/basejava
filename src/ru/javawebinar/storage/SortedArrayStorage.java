@@ -10,16 +10,11 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void insert(Resume resume, int index) {
-        int actualIndex = -(index + 1);
-        if (actualStorageSize - actualIndex > 0) {
-            System.arraycopy(storage, actualIndex, storage, actualIndex + 1, actualStorageSize - actualIndex);
-        } else  if (actualStorageSize - actualIndex == 0) {
-            //no need to use System.arraycopy()
-        } else {
-            //Why? Something will be probably fucked up in the future, that's why.
-            return;
+        int insertionIndex = -(index + 1);
+        if (actualStorageSize > insertionIndex) {
+            System.arraycopy(storage, insertionIndex, storage, insertionIndex + 1, actualStorageSize - insertionIndex);
         }
-        storage[actualIndex] = resume;
+        storage[insertionIndex] = resume;
     }
 
     @Override
@@ -29,8 +24,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void deleteByIndex(int index) {
-        if (index < actualStorageSize - 1) {
-            System.arraycopy(storage, index + 1, storage, index, actualStorageSize - index - 1);
+        int lengthOfCopiedArray = actualStorageSize - index - 1;
+        if (lengthOfCopiedArray > 0) {
+            System.arraycopy(storage, index + 1, storage, index, lengthOfCopiedArray);
         }
     }
 }
