@@ -5,8 +5,7 @@ import ru.javawebinar.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 100000;
-
+    protected static final int STORAGE_LIMIT = 100_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int actualStorageSize = 0;
 
@@ -14,7 +13,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void deleteByIndex(int index);
+    protected abstract void setUpStorage(int index);
 
     public void clear() {
         Arrays.fill(storage, 0, actualStorageSize, null);
@@ -49,7 +48,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             System.out.println("Error! This resume is not exist!");
         } else {
-            deleteByIndex(index);
+            setUpStorage(index);
             storage[actualStorageSize - 1] = null;
             actualStorageSize--;
         }
