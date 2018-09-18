@@ -4,7 +4,6 @@ import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.exception.StorageException;
 import ru.javawebinar.model.Resume;
-
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {

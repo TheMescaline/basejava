@@ -3,7 +3,6 @@ package ru.javawebinar;
 import ru.javawebinar.model.Resume;
 import ru.javawebinar.storage.ArrayStorage;
 import ru.javawebinar.storage.Storage;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
