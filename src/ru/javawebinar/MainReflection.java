@@ -12,10 +12,10 @@ public class MainReflection {
         Field field = resume.getClass().getDeclaredFields()[0];
         field.setAccessible(true);
         System.out.println(field.get(resume));
-        field.set(resume, "reflected");
+        field.set(resume, "changed by reflection");
         System.out.println(field.get(resume));
+        //HW4 below
         Method method = resume.getClass().getMethod("toString");
-        method.setAccessible(true);
         System.out.println(method.invoke(resume));
     }
 }
