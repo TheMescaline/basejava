@@ -47,8 +47,8 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object getPointerIfNotExist(String uuid) {
-        Resume resume = new Resume(uuid);
-        if (storage.contains(resume)) {
+        int index = getListIndex(uuid);
+        if (index >= 0) {
             ExistException(uuid);
         }
         return -1;
@@ -56,11 +56,19 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object getPointerIfExist(String uuid) {
-        Resume resume = new Resume(uuid);
-        int pointer = storage.indexOf(resume);
-        if (pointer < 0) {
+        int index = getListIndex(uuid);
+        if (index < 0) {
             NotExistException(uuid);
         }
-        return pointer;
+        return index;
+    }
+
+    private int getListIndex(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
