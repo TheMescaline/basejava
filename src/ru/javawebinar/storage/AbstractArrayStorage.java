@@ -1,7 +1,5 @@
 package ru.javawebinar.storage;
 
-import ru.javawebinar.exception.ExistException;
-import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.exception.StorageException;
 import ru.javawebinar.model.Resume;
 import java.util.Arrays;
@@ -42,19 +40,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getPointerIfNotExist(Resume resume) {
-        int index = getIndex(resume.getUuid());
+    protected Object getPointerIfNotExist(String uuid) {
+        int index = getIndex(uuid);
         if (index >= 0) {
-            throw new ExistException(resume.getUuid());
+            ExistException(uuid);
         }
         return index;
     }
 
     @Override
-    protected Object getPointerIfExist(Resume resume) {
-        int index = getIndex(resume.getUuid());
+    protected Object getPointerIfExist(String uuid) {
+        int index = getIndex(uuid);
         if (index < 0) {
-            throw new NotExistException(resume.getUuid());
+            NotExistException(uuid);
         }
         return index;
     }
