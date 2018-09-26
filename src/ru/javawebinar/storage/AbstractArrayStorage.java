@@ -11,15 +11,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract int getIndex(String uuid);
 
+    protected abstract void doSave(Resume resume, Object pointer);
+
+    protected abstract void doDelete(int index);
+
     @Override
     public void clear() {
         Arrays.fill(storage, 0, actualStorageSize, null);
         actualStorageSize = 0;
-    }
-
-    @Override
-    public int size() {
-        return actualStorageSize;
     }
 
     @Override
@@ -28,9 +27,29 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
+    public int size() {
+        return actualStorageSize;
+    }
+
+    @Override
+    protected void saveResume(Resume resume, Object pointer) {
+        if (isStorageNotFull(resume)) {
+            doSave(resume, pointer);
+            actualStorageSize++;
+        }
+    }
+
+    @Override
     protected void updateResume(Resume resume, Object pointer) {
         int index = (int) pointer;
         storage[index] = resume;
+    }
+
+    @Override
+    protected void deleteResume(Object pointer) {
+        int index = (int) pointer;
+        doDelete(index);
+        clearStorage();
     }
 
     @Override

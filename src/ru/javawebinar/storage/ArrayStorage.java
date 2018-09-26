@@ -17,17 +17,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void saveResume(Resume resume, Object index) {
-        if (isStorageNotFull(resume)) {
-            storage[actualStorageSize] = resume;
-            actualStorageSize++;
-        }
+    protected void doSave(Resume resume, Object pointer) {
+        storage[actualStorageSize] = resume;
     }
 
     @Override
-    protected void deleteResume(Object pointer) {
-        int index = (int) pointer;
+    protected void doDelete(int index) {
         storage[index] = storage[actualStorageSize - 1];
-        clearStorage();
     }
 }

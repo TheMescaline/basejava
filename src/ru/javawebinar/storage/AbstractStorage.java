@@ -30,15 +30,15 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public void delete(String uuid) {
-        Object pointer = getPointerIfExist(uuid);
-        deleteResume(pointer);
-    }
-
-    @Override
     public Resume get(String uuid) {
         Object pointer = getPointerIfExist(uuid);
         return getResume(pointer);
+    }
+
+    @Override
+    public void delete(String uuid) {
+        Object pointer = getPointerIfExist(uuid);
+        deleteResume(pointer);
     }
 
     protected void ExistException(String uuid) {

@@ -13,22 +13,17 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void saveResume(Resume resume, Object pointer) {
-        if (isStorageNotFull(resume)) {
-            int insertionIndex = -((int) pointer + 1);
-            System.arraycopy(storage, insertionIndex, storage, insertionIndex + 1, actualStorageSize - insertionIndex);
-            storage[insertionIndex] = resume;
-            actualStorageSize++;
-        }
+    protected void doSave(Resume resume, Object pointer) {
+        int insertionIndex = -((int) pointer + 1);
+        System.arraycopy(storage, insertionIndex, storage, insertionIndex + 1, actualStorageSize - insertionIndex);
+        storage[insertionIndex] = resume;
     }
 
     @Override
-    protected void deleteResume(Object pointer) {
-        int index = (int) pointer;
+    protected void doDelete(int index) {
         int lengthOfCopiedArray = actualStorageSize - index - 1;
         if (lengthOfCopiedArray > 0) {
             System.arraycopy(storage, index + 1, storage, index, lengthOfCopiedArray);
         }
-        clearStorage();
     }
 }

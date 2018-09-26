@@ -8,6 +8,10 @@ import ru.javawebinar.model.Resume;
 public interface Storage {
     void clear();
 
+    Resume[] getAll();
+
+    int size();
+
     void save(Resume resume);
 
     void update(Resume resume);
@@ -15,8 +19,4 @@ public interface Storage {
     Resume get(String uuid);
 
     void delete(String uuid);
-
-    Resume[] getAll();
-
-    int size();
 }
