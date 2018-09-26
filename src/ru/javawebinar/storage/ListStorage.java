@@ -15,13 +15,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public int size() {
-        return storage.size();
+    public Resume[] getAll() {
+        return storage.toArray(new Resume[0]);
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
+    public int size() {
+        return storage.size();
     }
 
     @Override
