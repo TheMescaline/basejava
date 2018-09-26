@@ -11,11 +11,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int actualStorageSize = 0;
 
-    protected abstract void insert(Resume resume, int index);
-
     protected abstract int getIndex(String uuid);
-
-    protected abstract void setUpStorage(int index);
 
     @Override
     public void clear() {
@@ -24,61 +20,56 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume resume) {
-        if (actualStorageSize == STORAGE_LIMIT) {
-            throw new StorageException("Error! Storage is full!", resume.getUuid());
-        } else {
-            int index = getIndex(resume.getUuid());
-            if (index >= 0) {
-                throw new ExistException(resume.getUuid());
-            } else {
-                insert(resume, index);
-                actualStorageSize++;
-            }
-        }
-    }
-
-    @Override
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistException(uuid);
-        } else {
-            setUpStorage(index);
-            storage[actualStorageSize - 1] = null;
-            actualStorageSize--;
-        }
-    }
-
-    @Override
     public int size() {
         return actualStorageSize;
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistException(uuid);
-        }
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, actualStorageSize);
+    }
+
+    @Override
+    protected void updateResume(Resume resume, Object pointer) {
+        int index = (int) pointer;
+        storage[index] = resume;
+    }
+
+    @Override
+    protected Resume getResume(Object pointer) {
+        int index = (int) pointer;
         return storage[index];
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, actualStorageSize);
+    protected void clearStorage() {
+        storage[actualStorageSize - 1] = null;
+        actualStorageSize--;
+    }
+
+    @Override
+    protected boolean isStorageNotFull(Resume resume) {
+        if (actualStorageSize == STORAGE_LIMIT) {
+            throw new StorageException("Error! Storage is full!", resume.getUuid());
+        }
+        return true;
+    }
+
+    @Override
+    protected Object getPointerIfNotExist(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            throw new ExistException(resume.getUuid());
+        }
+        return index;
+    }
+
+    @Override
+    protected Object getPointerIfExist(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index < 0) {
+            throw new NotExistException(resume.getUuid());
+        }
+        return index;
     }
 }

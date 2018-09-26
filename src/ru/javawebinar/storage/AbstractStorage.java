@@ -3,39 +3,46 @@ package ru.javawebinar.storage;
 import ru.javawebinar.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
+    protected abstract void saveResume(Resume resume, Object pointer);
+
+    protected abstract void updateResume(Resume resume, Object pointer);
+
+    protected abstract Resume getResume(Object pointer);
+
+    protected abstract void setUpStorage(Object pointer);
+
+    protected abstract void clearStorage();
+
+    protected abstract boolean isStorageNotFull(Resume resume);
+
+    protected abstract Object getPointerIfNotExist(Resume resume);
+
+    protected abstract Object getPointerIfExist(Resume resume);
+
     @Override
     public void save(Resume resume) {
-        checkExistException(resume.getUuid());
-        saveResume(resume);
+        if (isStorageNotFull(resume)) {
+            Object index = getPointerIfNotExist(resume);
+            saveResume(resume, index);
+        }
     }
 
     @Override
     public void update(Resume resume) {
-        checkNotExistException(resume.getUuid());
-        updateResume(resume);
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        checkNotExistException(uuid);
-        return getResume(uuid);
+        Object pointer = getPointerIfExist(resume);
+        updateResume(resume, pointer);
     }
 
     @Override
     public void delete(String uuid) {
-        checkNotExistException(uuid);
-        deleteResume(uuid);
+        Object pointer = getPointerIfExist(new Resume(uuid));
+        setUpStorage(pointer);
+        clearStorage();
     }
 
-    protected abstract void checkExistException(String uuid);
-
-    protected abstract void checkNotExistException(String uuid);
-
-    protected abstract Resume getResume(String uuid);
-
-    protected abstract void deleteResume(String uuid);
-
-    protected abstract void saveResume(Resume resume);
-
-    protected abstract void updateResume(Resume resume);
+    @Override
+    public Resume get(String uuid) {
+        Object pointer = getPointerIfExist(new Resume(uuid));
+        return getResume(pointer);
+    }
 }

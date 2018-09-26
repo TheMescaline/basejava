@@ -3,20 +3,15 @@ package ru.javawebinar.storage;
 import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MapStorage extends AbstractStorage {
-    protected Map<String, Resume> storage = new HashMap<>();
+public class ListStorage extends AbstractStorage {
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
@@ -25,32 +20,36 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    public Resume[] getAll() {
+        return storage.toArray(new Resume[0]);
+    }
+
+    @Override
     protected void saveResume(Resume resume, Object pointer) {
-        String key = resume.getUuid();
-        storage.put(key, resume);
+        storage.add(resume);
     }
 
     @Override
     protected void updateResume(Resume resume, Object pointer) {
-        String key = String.valueOf(pointer);
-        storage.put(key, resume);
+        int index = (int) pointer;
+        storage.set(index, resume);
     }
 
     @Override
     protected Resume getResume(Object pointer) {
-        String key = String.valueOf(pointer);
-        return storage.get(key);
+        int index = (int) pointer;
+        return storage.get(index);
     }
 
     @Override
     protected void setUpStorage(Object pointer) {
-        String key = String.valueOf(pointer);
-        storage.remove(key);
+        int index = (int) pointer;
+        storage.remove(index);
     }
 
     @Override
     protected void clearStorage() {
-        //nothing to clear
+        //nothing to do here
     }
 
     @Override
@@ -61,7 +60,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getPointerIfNotExist(Resume resume) {
-        if (storage.containsKey(resume.getUuid())) {
+        if (storage.contains(resume)) {
             throw new ExistException(resume.getUuid());
         }
         return -1;
@@ -69,9 +68,9 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getPointerIfExist(Resume resume) {
-        if (!storage.containsKey(resume.getUuid())) {
+        if (!storage.contains(resume)) {
             throw new NotExistException(resume.getUuid());
         }
-        return resume.getUuid();
+        return storage.indexOf(resume);
     }
 }
