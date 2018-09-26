@@ -42,20 +42,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void setUpStorage(Object pointer) {
+    protected void deleteResume(Object pointer) {
         int index = (int) pointer;
         storage.remove(index);
-    }
-
-    @Override
-    protected void clearStorage() {
-        //nothing to do here
-    }
-
-    @Override
-    protected boolean isStorageNotFull(Resume resume) {
-        //nothing to do here
-        return true;
     }
 
     @Override

@@ -9,11 +9,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Resume getResume(Object pointer);
 
-    protected abstract void setUpStorage(Object pointer);
-
-    protected abstract void clearStorage();
-
-    protected abstract boolean isStorageNotFull(Resume resume);
+    protected abstract void deleteResume(Object pointer);
 
     protected abstract Object getPointerIfNotExist(Resume resume);
 
@@ -21,10 +17,8 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        if (isStorageNotFull(resume)) {
-            Object index = getPointerIfNotExist(resume);
-            saveResume(resume, index);
-        }
+        Object index = getPointerIfNotExist(resume);
+        saveResume(resume, index);
     }
 
     @Override
@@ -36,8 +30,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void delete(String uuid) {
         Object pointer = getPointerIfExist(new Resume(uuid));
-        setUpStorage(pointer);
-        clearStorage();
+        deleteResume(pointer);
     }
 
     @Override

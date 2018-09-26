@@ -42,20 +42,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void clearStorage() {
-        storage[actualStorageSize - 1] = null;
-        actualStorageSize--;
-    }
-
-    @Override
-    protected boolean isStorageNotFull(Resume resume) {
-        if (actualStorageSize == STORAGE_LIMIT) {
-            throw new StorageException("Error! Storage is full!", resume.getUuid());
-        }
-        return true;
-    }
-
-    @Override
     protected Object getPointerIfNotExist(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
@@ -71,5 +57,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             throw new NotExistException(resume.getUuid());
         }
         return index;
+    }
+
+    protected boolean isStorageNotFull(Resume resume) {
+        if (actualStorageSize == STORAGE_LIMIT) {
+            throw new StorageException("Error! Storage is full!", resume.getUuid());
+        }
+        return true;
+    }
+
+    protected void clearStorage() {
+        storage[actualStorageSize - 1] = null;
+        actualStorageSize--;
     }
 }

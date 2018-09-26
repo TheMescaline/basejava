@@ -43,20 +43,9 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void setUpStorage(Object pointer) {
+    protected void deleteResume(Object pointer) {
         String key = String.valueOf(pointer);
         storage.remove(key);
-    }
-
-    @Override
-    protected void clearStorage() {
-        //nothing to clear
-    }
-
-    @Override
-    protected boolean isStorageNotFull(Resume resume) {
-        //nothing to do here
-        return true;
     }
 
     @Override
