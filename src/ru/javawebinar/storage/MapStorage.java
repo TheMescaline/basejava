@@ -47,18 +47,17 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getPointerIfNotExist(String uuid) {
-        if (storage.containsKey(uuid)) {
-            ExistException(uuid);
-        }
-        return -1;
+    protected Object getIndex(String uuid) {
+        return uuid;
     }
 
     @Override
-    protected Object getPointerIfExist(String uuid) {
-        if (!storage.containsKey(uuid)) {
-            NotExistException(uuid);
-        }
-        return uuid;
+    protected boolean notExistChecker(Object index) {
+        return storage.containsKey(index.toString());
+    }
+
+    @Override
+    protected boolean existChecker(Object index) {
+        return !storage.containsKey(index.toString());
     }
 }

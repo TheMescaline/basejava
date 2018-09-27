@@ -46,29 +46,22 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getPointerIfNotExist(String uuid) {
-        int index = getListIndex(uuid);
-        if (index >= 0) {
-            ExistException(uuid);
-        }
-        return -1;
-    }
-
-    @Override
-    protected Object getPointerIfExist(String uuid) {
-        int index = getListIndex(uuid);
-        if (index < 0) {
-            NotExistException(uuid);
-        }
-        return index;
-    }
-
-    private int getListIndex(String uuid) {
+    protected Object getIndex(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    @Override
+    protected boolean notExistChecker(Object index) {
+        return (int) index >= 0;
+    }
+
+    @Override
+    protected boolean existChecker(Object index) {
+        return (int) index < 0;
     }
 }

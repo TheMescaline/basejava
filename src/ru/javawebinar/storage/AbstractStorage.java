@@ -13,9 +13,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void deleteResume(Object pointer);
 
-    protected abstract Object getPointerIfNotExist(String uuid);
+    protected abstract Object getIndex(String uuid);
 
-    protected abstract Object getPointerIfExist(String uuid);
+    protected abstract boolean notExistChecker(Object index);
+
+    protected abstract boolean existChecker(Object index);
 
     @Override
     public void save(Resume resume) {
@@ -41,11 +43,27 @@ public abstract class AbstractStorage implements Storage {
         deleteResume(pointer);
     }
 
-    protected void ExistException(String uuid) {
+    private void ExistException(String uuid) {
         throw new ExistException(uuid);
     }
 
-    protected void NotExistException(String uuid) {
+    private void NotExistException(String uuid) {
         throw new NotExistException(uuid);
+    }
+
+    private Object getPointerIfNotExist(String uuid) {
+        Object index = getIndex(uuid);
+        if (notExistChecker(index)) {
+            ExistException(uuid);
+        }
+        return index;
+    }
+
+    private Object getPointerIfExist(String uuid) {
+        Object index = getIndex(uuid);
+        if (existChecker(index)) {
+            NotExistException(uuid);
+        }
+        return index;
     }
 }

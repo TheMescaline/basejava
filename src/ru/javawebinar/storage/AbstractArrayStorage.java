@@ -9,8 +9,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int actualStorageSize = 0;
 
-    protected abstract int getIndex(String uuid);
-
     protected abstract void doSave(Resume resume, Object pointer);
 
     protected abstract void doDelete(int index);
@@ -61,20 +59,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getPointerIfNotExist(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            ExistException(uuid);
-        }
-        return index;
+    protected boolean notExistChecker(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
-    protected Object getPointerIfExist(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            NotExistException(uuid);
-        }
-        return index;
+    protected boolean existChecker(Object index) {
+        return (int) index < 0;
     }
 }
