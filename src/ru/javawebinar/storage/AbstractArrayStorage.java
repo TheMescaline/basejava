@@ -33,10 +33,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void saveResume(Resume resume, Object pointer) {
-        if (isStorageNotFull(resume)) {
-            doSave(resume, pointer);
-            actualStorageSize++;
+        if (actualStorageSize == STORAGE_LIMIT) {
+            throw new StorageException("Error! Storage is full!", resume.getUuid());
         }
+        doSave(resume, pointer);
+        actualStorageSize++;
     }
 
     @Override
@@ -49,7 +50,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected void deleteResume(Object pointer) {
         int index = (int) pointer;
         doDelete(index);
-        clearStorage();
+        storage[actualStorageSize - 1] = null;
+        actualStorageSize--;
     }
 
     @Override
@@ -74,17 +76,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             NotExistException(uuid);
         }
         return index;
-    }
-
-    protected boolean isStorageNotFull(Resume resume) {
-        if (actualStorageSize == STORAGE_LIMIT) {
-            throw new StorageException("Error! Storage is full!", resume.getUuid());
-        }
-        return true;
-    }
-
-    protected void clearStorage() {
-        storage[actualStorageSize - 1] = null;
-        actualStorageSize--;
     }
 }
