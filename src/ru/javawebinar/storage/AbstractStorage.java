@@ -41,18 +41,10 @@ public abstract class AbstractStorage implements Storage {
         deleteResume(pointer);
     }
 
-    private void ExistException(String uuid) {
-        throw new ExistException(uuid);
-    }
-
-    private void NotExistException(String uuid) {
-        throw new NotExistException(uuid);
-    }
-
     private Object getPointerIfNotExist(String uuid) {
         Object index = getIndex(uuid);
         if (indexChecker(index)) {
-            ExistException(uuid);
+            throw new ExistException(uuid);
         }
         return index;
     }
@@ -60,7 +52,7 @@ public abstract class AbstractStorage implements Storage {
     private Object getPointerIfExist(String uuid) {
         Object index = getIndex(uuid);
         if (!indexChecker(index)) {
-            NotExistException(uuid);
+            throw new NotExistException(uuid);
         }
         return index;
     }
