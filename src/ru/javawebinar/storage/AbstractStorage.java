@@ -15,9 +15,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getIndex(String uuid);
 
-    protected abstract boolean notExistChecker(Object index);
-
-    protected abstract boolean existChecker(Object index);
+    protected abstract boolean indexChecker(Object index);
 
     @Override
     public void save(Resume resume) {
@@ -53,7 +51,7 @@ public abstract class AbstractStorage implements Storage {
 
     private Object getPointerIfNotExist(String uuid) {
         Object index = getIndex(uuid);
-        if (notExistChecker(index)) {
+        if (indexChecker(index)) {
             ExistException(uuid);
         }
         return index;
@@ -61,7 +59,7 @@ public abstract class AbstractStorage implements Storage {
 
     private Object getPointerIfExist(String uuid) {
         Object index = getIndex(uuid);
-        if (existChecker(index)) {
+        if (!indexChecker(index)) {
             NotExistException(uuid);
         }
         return index;

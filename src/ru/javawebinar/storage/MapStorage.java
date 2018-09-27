@@ -52,12 +52,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean notExistChecker(Object index) {
+    protected boolean indexChecker(Object index) {
         return storage.containsKey(index.toString());
-    }
-
-    @Override
-    protected boolean existChecker(Object index) {
-        return !storage.containsKey(index.toString());
     }
 }
