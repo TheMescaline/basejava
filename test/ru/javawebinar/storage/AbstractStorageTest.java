@@ -6,6 +6,7 @@ import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -21,13 +22,14 @@ public class AbstractStorageTest {
     private static final Resume RESUME_1 = new Resume(UUID_1);
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final Resume RESUME_3 = new Resume(UUID_3);
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
@@ -95,7 +97,7 @@ public class AbstractStorageTest {
     public void getAll() {
         Resume[] sampleArray = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
         Resume[] testArray = storage.getAll();
-        Arrays.sort(testArray);
+        Arrays.sort(testArray, RESUME_COMPARATOR);
         assertArrayEquals(sampleArray, testArray);
     }
 
