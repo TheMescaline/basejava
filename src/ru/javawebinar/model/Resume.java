@@ -8,13 +8,20 @@ import java.util.UUID;
 public class Resume{
     // Unique identifier
     private final String uuid;
+    private final String fullName;
 
-    public Resume() {
+    public Resume(String fullName) {
+        this.fullName = fullName;
         this.uuid = UUID.randomUUID().toString();
     }
 
-    public Resume(String uuid) {
+    public Resume(String fullName, String uuid) {
+        this.fullName = fullName;
         this.uuid = uuid;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public String getUuid() {
@@ -27,13 +34,13 @@ public class Resume{
         if (o == null || getClass() != o.getClass()) return false;
 
         Resume resume = (Resume) o;
-
+        if (!this.getFullName().equals(resume.getFullName())) return false;
         return uuid.equals(resume.uuid);
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return uuid.hashCode() + fullName.hashCode();
     }
 
     @Override
