@@ -6,7 +6,7 @@ import ru.javawebinar.model.Resume;
 import java.util.Comparator;
 
 public abstract class AbstractStorage implements Storage {
-    protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName);
+    protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     protected abstract void saveResume(Resume resume, Object pointer);
 
