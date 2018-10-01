@@ -1,5 +1,6 @@
 package ru.javawebinar.storage;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.exception.ExistException;
@@ -40,6 +41,11 @@ public class AbstractStorageTest {
         sizeBeforeTest = storage.size();
     }
 
+    @After
+    public void setFullName2() {
+        RESUME_2.setFullName(FULL_NAME_2);
+    }
+
     @Test
     public void clear() {
         storage.clear();
@@ -60,6 +66,7 @@ public class AbstractStorageTest {
 
     @Test
     public void update() {
+        RESUME_2.setFullName("New name");
         storage.update(RESUME_2);
         assertGet(RESUME_2, UUID_2);
     }
