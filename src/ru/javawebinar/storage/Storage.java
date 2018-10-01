@@ -1,6 +1,7 @@
 package ru.javawebinar.storage;
 
 import ru.javawebinar.model.Resume;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -8,7 +9,7 @@ import ru.javawebinar.model.Resume;
 public interface Storage {
     void clear();
 
-    Resume[] getAll();
+    List<Resume> getAllSorted();
 
     int size();
 

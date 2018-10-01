@@ -3,8 +3,11 @@ package ru.javawebinar.storage;
 import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
+import java.util.Comparator;
 
 public abstract class AbstractStorage implements Storage {
+    protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName);
+
     protected abstract void saveResume(Resume resume, Object pointer);
 
     protected abstract void updateResume(Resume resume, Object pointer);
