@@ -10,13 +10,9 @@ public class Resume{
     private final String uuid;
     private String fullName;
 
-    public Resume() {
-        this.fullName = "anonymous";
+    public Resume(String fullName) {
+        this.fullName = fullName;
         this.uuid = UUID.randomUUID().toString();
-    }
-    public Resume(String uuid) {
-        this.fullName = "anonymous";
-        this.uuid = uuid;
     }
 
     public Resume(String uuid, String fullName) {

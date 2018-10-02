@@ -4,6 +4,7 @@ import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
 import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
     protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
@@ -19,6 +20,15 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Object getIndex(String uuid);
 
     protected abstract boolean indexChecker(Object index);
+
+    protected abstract List<Resume> createList();
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> result = createList();
+        result.sort(RESUME_COMPARATOR);
+        return result;
+    }
 
     @Override
     public void save(Resume resume) {

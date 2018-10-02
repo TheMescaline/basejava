@@ -15,10 +15,8 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> result = new ArrayList<>(storage.values());
-        result.sort(RESUME_COMPARATOR);
-        return result;
+    protected List<Resume> createList() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -56,6 +54,6 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected boolean indexChecker(Object index) {
-        return storage.containsValue(index);
+        return index != null;
     }
 }

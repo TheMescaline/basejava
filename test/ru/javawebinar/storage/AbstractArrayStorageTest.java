@@ -15,11 +15,11 @@ public class AbstractArrayStorageTest extends AbstractStorageTest {
     public void saveStorageException() {
         try {
             for (int i = sizeBeforeTest; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume("test" + i));
             }
         } catch (StorageException e) {
             fail("Unpredicted exception! Wrong storage overflow logic.");
         }
-        storage.save(new Resume());
+        storage.save(new Resume("test exception"));
     }
 }
