@@ -5,12 +5,12 @@ import ru.javawebinar.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 100;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int actualStorageSize = 0;
 
-    protected abstract void doSave(Resume resume, Object pointer);
+    protected abstract void doSave(Resume resume, Integer index);
 
     protected abstract void doDelete(int index);
 
@@ -31,36 +31,33 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveResume(Resume resume, Object pointer) {
+    protected void saveResume(Resume resume, Integer index) {
         if (actualStorageSize == STORAGE_LIMIT) {
             throw new StorageException("Error! Storage is full!", resume.getUuid());
         }
-        doSave(resume, pointer);
+        doSave(resume, index);
         actualStorageSize++;
     }
 
     @Override
-    protected void updateResume(Resume resume, Object pointer) {
-        int index = (int) pointer;
+    protected void updateResume(Resume resume, Integer index) {
         storage[index] = resume;
     }
 
     @Override
-    protected void deleteResume(Object pointer) {
-        int index = (int) pointer;
+    protected void deleteResume(Integer index) {
         doDelete(index);
         storage[actualStorageSize - 1] = null;
         actualStorageSize--;
     }
 
     @Override
-    protected Resume getResume(Object pointer) {
-        int index = (int) pointer;
+    protected Resume getResume(Integer index) {
         return storage[index];
     }
 
     @Override
-    protected boolean indexChecker(Object index) {
-        return (int) index >= 0;
+    protected boolean indexChecker(Integer index) {
+        return index >= 0;
     }
 }

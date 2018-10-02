@@ -17,7 +17,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doSave(Resume resume, Object pointer) {
+    protected void doSave(Resume resume, Integer index) {
         storage[actualStorageSize] = resume;
     }
 

@@ -5,10 +5,10 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume{
+public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
-    private String fullName;
+    private final String fullName;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -19,16 +19,12 @@ public class Resume{
         this.fullName = fullName;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public String getUuid() {
         return uuid;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     @Override
@@ -49,5 +45,11 @@ public class Resume{
     @Override
     public String toString() {
         return "Resume of " + fullName + ". UUID: " + uuid;
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        int cmp = fullName.compareTo(o.fullName);
+        return cmp != 0 ? cmp : uuid.compareTo((o.fullName));
     }
 }
