@@ -12,12 +12,9 @@ public class MainTestResume {
 
         Contact address = new Contact("Moscow, Russia");
         Contact telephone = new Contact("+7-912-345-67-89");
-        Contact email = new Contact("test@email.com");
-        email.setUrl("mailto:test@email.com");
-        Contact skype = new Contact("test.test");
-        skype.setUrl("skype:test.test");
-        Contact git = new Contact("TestAccount");
-        git.setUrl("http://github.com/TestAccount");
+        Contact email = new Contact("test@email.com", "mailto:test@email.com");
+        Contact skype = new Contact("test.test", "skype:test.test");
+        Contact git = new Contact("TestAccount", "http://github.com/TestAccount");
 
         testResume.setContact(ContactType.CELL, telephone);
         testResume.setContact(ContactType.ADDRESS, address);
@@ -38,18 +35,16 @@ public class MainTestResume {
         qualificationsList.add("Second qualification");
         ListSection qualifications = new ListSection(qualificationsList);
 
-        Organization firstOrganization = new Organization("Red stone", "01/2009 - 03/2009","Seller");
-        firstOrganization.setInfo("Was a seller in a store.");
-        Organization secondOrganization = new Organization("Black Sails", "05/2009 - 06/2009", "Worker");
-        secondOrganization.setInfo("Was a worker");
+        Organization firstOrganization = new Organization(new Contact("Red square", "http://square.com"), "01/2009 - 03/2009","Seller", "Was a seller in a store.");
+        Organization secondOrganization = new Organization(new Contact("Black Sails"), "05/2009 - 06/2009", "Worker", "Was a worker");
 
         List<Organization> organizationsList = new ArrayList<>();
         organizationsList.add(firstOrganization);
         organizationsList.add(secondOrganization);
         OrganizationsSection experience = new OrganizationsSection(organizationsList);
 
-        Organization firstUniversity = new Organization("MAI", "09/2012 - 03/2013","Master degree");
-        Organization secondSchool = new Organization("School #2", "09/1996 - 06/2006", "Schoolboy");
+        Organization firstUniversity = new Organization(new Contact("MAI"), "09/2012 - 03/2013","Master degree");
+        Organization secondSchool = new Organization(new Contact("School #2"), "09/1996 - 06/2006", "Schoolboy");
 
         List<Organization> educationList = new ArrayList<>();
         educationList.add(firstUniversity);

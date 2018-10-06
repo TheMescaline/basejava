@@ -7,11 +7,12 @@ public class Contact {
     private String url;
 
     public Contact(String info) {
-        Objects.requireNonNull(info);
+        Objects.requireNonNull(info, "info must not be null");
         this.info = info;
     }
 
-    public void setUrl(String url) {
+    public Contact(String info, String url) {
+        this(info);
         this.url = url;
     }
 
