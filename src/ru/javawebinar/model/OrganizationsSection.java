@@ -1,11 +1,13 @@
 package ru.javawebinar.model;
 
 import java.util.List;
+import java.util.Objects;
 
-public class OrganizationsList extends Field<List<Organization>> {
+public class OrganizationsSection extends Section<List<Organization>> {
     private final List<Organization> organizationList;
 
-    public OrganizationsList(List<Organization> organizationList) {
+    public OrganizationsSection(List<Organization> organizationList) {
+        Objects.requireNonNull(organizationList);
         this.organizationList = organizationList;
     }
 
@@ -18,14 +20,14 @@ public class OrganizationsList extends Field<List<Organization>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrganizationsList that = (OrganizationsList) o;
+        OrganizationsSection that = (OrganizationsSection) o;
 
-        return organizationList != null ? organizationList.equals(that.organizationList) : that.organizationList == null;
+        return organizationList.equals(that.organizationList);
     }
 
     @Override
     public int hashCode() {
-        return organizationList != null ? organizationList.hashCode() : 0;
+        return organizationList.hashCode();
     }
 
     @Override

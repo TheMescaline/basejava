@@ -1,11 +1,13 @@
 package ru.javawebinar.model;
 
 import java.util.List;
+import java.util.Objects;
 
-public class ListField extends Field<List<String>> {
+public class ListSection extends Section<List<String>> {
     private List<String> list;
 
-    public ListField(List<String> list) {
+    public ListSection(List<String> list) {
+        Objects.requireNonNull(list);
         this.list = list;
     }
 
@@ -19,14 +21,14 @@ public class ListField extends Field<List<String>> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ListField listField = (ListField) o;
+        ListSection that = (ListSection) o;
 
-        return list != null ? list.equals(listField.list) : listField.list == null;
+        return list.equals(that.list);
     }
 
     @Override
     public int hashCode() {
-        return list != null ? list.hashCode() : 0;
+        return list.hashCode();
     }
 
     @Override

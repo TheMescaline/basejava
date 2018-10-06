@@ -12,22 +12,22 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private Map<String, Contact> contacts = new HashMap<>();
-    private Map<SectionType, Field> sections = new HashMap<>();
+    private Map<ContactType, Contact> contacts = new HashMap<>();
+    private Map<SectionType, Section> sections = new HashMap<>();
 
-    public void setContact(String name, Contact contact) {
-        contacts.put(name, contact);
+    public void setContact(ContactType type, Contact contact) {
+        contacts.put(type, contact);
     }
 
-    public Contact getContact(String name) {
-        return contacts.get(name);
+    public Contact getContact(ContactType type) {
+        return contacts.get(type);
     }
 
-    public void setSection(SectionType type, Field field) {
+    public void setSection(SectionType type, Section field) {
         sections.put(type, field);
     }
 
-    public Field getSection(SectionType type) {
+    public Section getSection(SectionType type) {
         return sections.get(type);
     }
 
@@ -53,8 +53,9 @@ public class Resume implements Comparable<Resume> {
     public void printFullInfo() {
         System.out.println(getFullName());
         System.out.println();
-        for (Map.Entry<String, Contact> pair : contacts.entrySet()) {
-            System.out.println(pair.getKey() + ": " + pair.getValue());
+        for (ContactType type : ContactType.values()) {
+            System.out.print(type.getTitle() + ": ");
+            System.out.println(contacts.get(type));
         }
         System.out.println();
         for (SectionType type : SectionType.values()) {

@@ -32,6 +32,6 @@ public class Contact {
 
     @Override
     public String toString() {
-        return url != null?  url : info;
+        return url != null?  info + " (" + url + ")" : info;
     }
 }

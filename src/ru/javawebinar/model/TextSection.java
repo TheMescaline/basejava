@@ -1,9 +1,12 @@
 package ru.javawebinar.model;
 
-public class TextField extends Field<String> {
+import java.util.Objects;
+
+public class TextSection extends Section<String> {
     private String text;
 
-    public TextField(String text) {
+    public TextSection(String text) {
+        Objects.requireNonNull(text);
         this.text = text;
     }
 
@@ -17,14 +20,14 @@ public class TextField extends Field<String> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TextField textField = (TextField) o;
+        TextSection that = (TextSection) o;
 
-        return text != null ? text.equals(textField.text) : textField.text == null;
+        return text.equals(that.text);
     }
 
     @Override
     public int hashCode() {
-        return text != null ? text.hashCode() : 0;
+        return text.hashCode();
     }
 
     @Override
