@@ -1,5 +1,8 @@
 package ru.javawebinar.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -9,12 +12,32 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullName;
+    private Map<String, Contact> contacts = new HashMap<>();
+    private Map<SectionType, Field> sections = new HashMap<>();
+
+    public void setContact(String name, Contact contact) {
+        contacts.put(name, contact);
+    }
+
+    public Contact getContact(String name) {
+        return contacts.get(name);
+    }
+
+    public void setSection(SectionType type, Field field) {
+        sections.put(type, field);
+    }
+
+    public Field getSection(SectionType type) {
+        return sections.get(type);
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid must not be null");
+        Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -27,19 +50,35 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
+    public void printFullInfo() {
+        System.out.println(getFullName());
+        System.out.println();
+        for (Map.Entry<String, Contact> pair : contacts.entrySet()) {
+            System.out.println(pair.getKey() + ": " + pair.getValue());
+        }
+        System.out.println();
+        for (SectionType type : SectionType.values()) {
+            System.out.println(type.getTitle());
+            System.out.println(sections.get(type));
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Resume resume = (Resume) o;
-        if (!this.getFullName().equals(resume.getFullName())) return false;
-        return uuid.equals(resume.uuid);
+
+        if (!uuid.equals(resume.uuid)) return false;
+        return fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode() + fullName.hashCode();
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        return result;
     }
 
     @Override
