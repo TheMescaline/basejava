@@ -1,15 +1,26 @@
 package ru.javawebinar.model;
 
+import java.util.Objects;
+
 public class Contact {
     private final String info;
     private String url;
 
     public Contact(String info) {
+        Objects.requireNonNull(info);
         this.info = info;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     @Override
@@ -19,13 +30,13 @@ public class Contact {
 
         Contact contact = (Contact) o;
 
-        if (info != null ? !info.equals(contact.info) : contact.info != null) return false;
+        if (!info.equals(contact.info)) return false;
         return url != null ? url.equals(contact.url) : contact.url == null;
     }
 
     @Override
     public int hashCode() {
-        int result = info != null ? info.hashCode() : 0;
+        int result = info.hashCode();
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }

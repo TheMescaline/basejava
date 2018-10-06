@@ -10,6 +10,10 @@ public class TextSection extends Section<String> {
         this.text = text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     @Override
     public String getData() {
         return text;
