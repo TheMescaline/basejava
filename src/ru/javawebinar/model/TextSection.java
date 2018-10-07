@@ -2,7 +2,7 @@ package ru.javawebinar.model;
 
 import java.util.Objects;
 
-public class TextSection extends Section<String> {
+public class TextSection extends Section {
     private String text;
 
     public TextSection(String text) {
@@ -11,10 +11,10 @@ public class TextSection extends Section<String> {
     }
 
     public void setText(String text) {
+        Objects.requireNonNull(text, "text must not be null");
         this.text = text;
     }
 
-    @Override
     public String getData() {
         return text;
     }

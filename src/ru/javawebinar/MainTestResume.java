@@ -1,6 +1,7 @@
 package ru.javawebinar;
 
 import ru.javawebinar.model.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +36,16 @@ public class MainTestResume {
         qualificationsList.add("Second qualification");
         ListSection qualifications = new ListSection(qualificationsList);
 
-        Organization firstOrganization = new Organization(new Contact("Red square", "http://square.com"), "01/2009 - 03/2009","Seller", "Was a seller in a store.");
-        Organization secondOrganization = new Organization(new Contact("Black Sails"), "05/2009 - 06/2009", "Worker", "Was a worker");
+        Organization firstOrganization = new Organization(new Contact("Red square", "http://square.com"), LocalDate.of(2009, 1 ,1),LocalDate.of(2009, 2, 1),"Seller", "Was a seller in a store.");
+        Organization secondOrganization = new Organization(new Contact("Black Sails"), LocalDate.of(2009, 2, 1), LocalDate.of(2009, 6, 1), "Worker", "Was a worker");
 
         List<Organization> organizationsList = new ArrayList<>();
         organizationsList.add(firstOrganization);
         organizationsList.add(secondOrganization);
         OrganizationsSection experience = new OrganizationsSection(organizationsList);
 
-        Organization firstUniversity = new Organization(new Contact("MAI"), "09/2012 - 03/2013","Master degree");
-        Organization secondSchool = new Organization(new Contact("School #2"), "09/1996 - 06/2006", "Schoolboy");
+        Organization firstUniversity = new Organization(new Contact("MAI"), LocalDate.of(2012, 9, 1), LocalDate.of(2013, 3, 1),"Master degree");
+        Organization secondSchool = new Organization(new Contact("School #2"), LocalDate.of(1996, 9, 1), LocalDate.of(2006, 6, 1), "Schoolboy");
 
         List<Organization> educationList = new ArrayList<>();
         educationList.add(firstUniversity);
@@ -58,7 +59,7 @@ public class MainTestResume {
         testResume.setSection(SectionType.EXPERIENCE, experience);
         testResume.setSection(SectionType.EDUCATION, education);
 
-        testResume.printFullInfo();
+        System.out.println(testResume);
     }
 
 

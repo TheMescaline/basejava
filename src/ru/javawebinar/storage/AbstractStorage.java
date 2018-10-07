@@ -4,11 +4,13 @@ import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class AbstractStorage<P> implements Storage {
     private final static Logger LOGGER = Logger.getLogger(AbstractStorage.class.getName());
+    protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     protected abstract void saveResume(Resume resume, P pointer);
 
@@ -28,7 +30,7 @@ public abstract class AbstractStorage<P> implements Storage {
     public List<Resume> getAllSorted() {
         LOGGER.info("getAllSorted");
         List<Resume> result = createList();
-        Collections.sort(result);
+        Collections.sort(result, RESUME_COMPARATOR);
         return result;
     }
 

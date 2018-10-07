@@ -3,7 +3,7 @@ package ru.javawebinar.model;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationsSection extends Section<List<Organization>> {
+public class OrganizationsSection extends Section {
     private final List<Organization> organizationList;
 
     public OrganizationsSection(List<Organization> organizationList) {

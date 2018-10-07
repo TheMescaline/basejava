@@ -3,7 +3,7 @@ package ru.javawebinar.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section<List<String>> {
+public class ListSection extends Section {
     private final List<String> list;
 
     public ListSection(List<String> list) {
@@ -11,7 +11,6 @@ public class ListSection extends Section<List<String>> {
         this.list = list;
     }
 
-    @Override
     public List<String> getData() {
         return list;
     }

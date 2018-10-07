@@ -1,24 +1,28 @@
 package ru.javawebinar.model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Organization {
     private final Contact contact;
-    private final String dates;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final String position;
     private String info;
 
-    public Organization(Contact contact, String dates, String position) {
+    public Organization(Contact contact, LocalDate startDate, LocalDate endDate, String position) {
         Objects.requireNonNull(contact, "contact must not be null");
-        Objects.requireNonNull(dates, "dates must not be null");
+        Objects.requireNonNull(startDate, "startDate must not be null");
+        Objects.requireNonNull(endDate, "endDate must not be null");
         Objects.requireNonNull(position, "position must not be null");
         this.contact = contact;
-        this.dates = dates;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.position = position;
     }
 
-    public Organization(Contact contact, String dates, String position, String info) {
-        this(contact, dates, position);
+    public Organization(Contact contact, LocalDate startDate, LocalDate endDate, String position, String info) {
+        this(contact, startDate, endDate, position);
         this.info = info;
     }
 
@@ -34,8 +38,12 @@ public class Organization {
         return contact.getInfo();
     }
 
-    public String getDates() {
-        return dates;
+    public LocalDate getStartDates() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public String getPosition() {
@@ -50,7 +58,8 @@ public class Organization {
         Organization that = (Organization) o;
 
         if (!contact.equals(that.contact)) return false;
-        if (!dates.equals(that.dates)) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
         if (!position.equals(that.position)) return false;
         return info != null ? info.equals(that.info) : that.info == null;
     }
@@ -58,7 +67,8 @@ public class Organization {
     @Override
     public int hashCode() {
         int result = contact.hashCode();
-        result = 31 * result + dates.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
         result = 31 * result + position.hashCode();
         result = 31 * result + (info != null ? info.hashCode() : 0);
         return result;
@@ -70,7 +80,20 @@ public class Organization {
         sb.append(contact.getInfo());
         String url = contact.getUrl();
         if (url != null) sb.append("\turl: ").append(url);
-        sb.append(System.lineSeparator()).append("\t").append(dates).append("\t").append(position).append(System.lineSeparator());
+        int startMonth = startDate.getMonthValue();
+        int endMonth = endDate.getMonthValue();
+        sb.append(System.lineSeparator()).
+                append("\t").
+                append(startMonth < 10 ? "0" + startMonth : startMonth).
+                append("/").
+                append(startDate.getYear()).
+                append("-").
+                append(endMonth < 10 ? "0" + endMonth : endMonth).
+                append("/").
+                append(endDate.getYear()).
+                append("\t").
+                append(position).
+                append(System.lineSeparator());
         if (info != null) sb.append(info).append(System.lineSeparator());
         return sb.toString();
     }

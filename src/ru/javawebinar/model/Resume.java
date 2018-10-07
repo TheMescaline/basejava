@@ -1,6 +1,6 @@
 package ru.javawebinar.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -8,12 +8,23 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume> {
+public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private Map<ContactType, Contact> contacts = new HashMap<>();
-    private Map<SectionType, Section> sections = new HashMap<>();
+    private Map<ContactType, Contact> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
+    }
+
+    public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid must not be null");
+        Objects.requireNonNull(fullName, "fullName must not be null");
+        this.uuid = uuid;
+        this.fullName = fullName;
+    }
 
     public void setContact(ContactType type, Contact contact) {
         contacts.put(type, contact);
@@ -31,37 +42,12 @@ public class Resume implements Comparable<Resume> {
         return sections.get(type);
     }
 
-    public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
-    }
-
-    public Resume(String uuid, String fullName) {
-        Objects.requireNonNull(uuid, "uuid must not be null");
-        Objects.requireNonNull(fullName, "fullName must not be null");
-        this.uuid = uuid;
-        this.fullName = fullName;
-    }
-
     public String getUuid() {
         return uuid;
     }
 
     public String getFullName() {
         return fullName;
-    }
-
-    public void printFullInfo() {
-        System.out.println(getFullName());
-        System.out.println();
-        for (ContactType type : ContactType.values()) {
-            System.out.print(type.getTitle() + ": ");
-            System.out.println(contacts.get(type));
-        }
-        System.out.println();
-        for (SectionType type : SectionType.values()) {
-            System.out.println(type.getTitle());
-            System.out.println(sections.get(type));
-        }
     }
 
     @Override
@@ -72,24 +58,31 @@ public class Resume implements Comparable<Resume> {
         Resume resume = (Resume) o;
 
         if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
+        if (!fullName.equals(resume.fullName)) return false;
+        if (contacts != null ? !contacts.equals(resume.contacts) : resume.contacts != null) return false;
+        return sections != null ? sections.equals(resume.sections) : resume.sections == null;
     }
 
     @Override
     public int hashCode() {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
+        result = 31 * result + (sections != null ? sections.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Resume of " + fullName + ". UUID: " + uuid;
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-        int cmp = fullName.compareTo(o.fullName);
-        return cmp != 0 ? cmp : uuid.compareTo((o.fullName));
+        StringBuilder sb = new StringBuilder();
+        sb.append(getFullName()).append(getUuid()).append(System.lineSeparator()).append(System.lineSeparator());
+        for (ContactType type : ContactType.values()) {
+            sb.append(type.getTitle()).append(": ").append(contacts.get(type)).append(System.lineSeparator());
+        }
+        sb.append(System.lineSeparator());
+        for (SectionType type : SectionType.values()) {
+            sb.append(type.getTitle()).append(System.lineSeparator()).append(sections.get(type)).append(System.lineSeparator());
+        }
+        return sb.toString();
     }
 }
