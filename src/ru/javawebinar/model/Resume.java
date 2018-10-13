@@ -75,7 +75,7 @@ public class Resume {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getFullName()).append(getUuid()).append(System.lineSeparator()).append(System.lineSeparator());
+        sb.append(getFullName()).append("\t").append(getUuid()).append(System.lineSeparator()).append(System.lineSeparator());
         for (ContactType type : ContactType.values()) {
             sb.append(type.getTitle()).append(": ").append(contacts.get(type)).append(System.lineSeparator());
         }

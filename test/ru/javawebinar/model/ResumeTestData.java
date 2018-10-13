@@ -1,21 +1,20 @@
-package ru.javawebinar;
+package ru.javawebinar.model;
 
-import ru.javawebinar.model.*;
 import ru.javawebinar.util.DateUtil;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainTestResume {
-    public static void main(String[] args) {
-        Resume testResume = new Resume("test", "Test test");
-
-        testResume.setContact(ContactType.CELL, new Contact("+7-912-345-67-89"));
-        testResume.setContact(ContactType.ADDRESS, new Contact("Moscow, Russia"));
-        testResume.setContact(ContactType.EMAIL, new Contact("test@email.com", "mailto:test@email.com"));
-        testResume.setContact(ContactType.SKYPE, new Contact("test.test", "skype:test.test"));
-        testResume.setContact(ContactType.GITHUB, new Contact("TestAccount", "http://github.com/TestAccount"));
+public class ResumeTestData extends Resume{
+    public ResumeTestData(String uuid, String name) {
+        super(uuid, name);
+       
+        this.setContact(ContactType.CELL, new Contact("+7-912-345-67-89"));
+        this.setContact(ContactType.ADDRESS, new Contact("Moscow, Russia"));
+        this.setContact(ContactType.EMAIL, new Contact("test@email.com", "mailto:test@email.com"));
+        this.setContact(ContactType.SKYPE, new Contact("test.test", "skype:test.test"));
+        this.setContact(ContactType.GITHUB, new Contact("TestAccount", "http://github.com/TestAccount"));
 
         ListSection achievements = new ListSection(new ArrayList<>(Arrays.asList("First achievement", "Second achievement")));
         ListSection qualifications = new ListSection(new ArrayList<>(Arrays.asList("First qualification", "Second qualification")));
@@ -36,13 +35,11 @@ public class MainTestResume {
         educationList.add(secondSchool);
         OrganizationsSection education = new OrganizationsSection(educationList);
 
-        testResume.setSection(SectionType.PERSONAL, new TextSection("My personal"));
-        testResume.setSection(SectionType.OBJECTIVE, new TextSection("My position."));
-        testResume.setSection(SectionType.ACHIEVEMENT, achievements);
-        testResume.setSection(SectionType.QUALIFICATIONS, qualifications);
-        testResume.setSection(SectionType.EXPERIENCE, experience);
-        testResume.setSection(SectionType.EDUCATION, education);
-
-        System.out.println(testResume);
+        this.setSection(SectionType.PERSONAL, new TextSection("My personal"));
+        this.setSection(SectionType.OBJECTIVE, new TextSection("My position."));
+        this.setSection(SectionType.ACHIEVEMENT, achievements);
+        this.setSection(SectionType.QUALIFICATIONS, qualifications);
+        this.setSection(SectionType.EXPERIENCE, experience);
+        this.setSection(SectionType.EDUCATION, education);
     }
 }
