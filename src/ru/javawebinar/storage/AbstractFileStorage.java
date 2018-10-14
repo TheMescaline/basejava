@@ -61,12 +61,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected File getPointer(String uuid) {
+    protected File getKey(String uuid) {
         return new File(directory, uuid);
     }
 
     @Override
-    protected boolean pointerChecker(File file) {
+    protected boolean checkKey(File file) {
         return file.exists();
     }
 
@@ -97,7 +97,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public int size() {
         String[] names = directory.list();
-        if (names == null) throw new RuntimeException("Directory is empty!");
+        if (names == null) {
+            throw new RuntimeException("Directory is empty!");
+        }
         return names.length;
     }
 }

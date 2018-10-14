@@ -46,12 +46,12 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected String getPointer(String uuid) {
+    protected String getKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected boolean pointerChecker(String index) {
+    protected boolean checkKey(String index) {
         return storage.containsKey(index);
     }
 }

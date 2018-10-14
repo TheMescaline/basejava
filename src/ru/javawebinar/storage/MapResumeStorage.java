@@ -25,34 +25,34 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected void saveResume(Resume resume, Resume pointer) {
-        String key = resume.getUuid();
-        storage.put(key, resume);
+    protected void saveResume(Resume resume, Resume key) {
+        String tempKey = resume.getUuid();
+        storage.put(tempKey, resume);
     }
 
     @Override
-    protected void updateResume(Resume resume, Resume pointer) {
-        String key = resume.getUuid();
-        storage.put(key, resume);
+    protected void updateResume(Resume resume, Resume key) {
+        String tempKey = resume.getUuid();
+        storage.put(tempKey, resume);
     }
 
     @Override
-    protected Resume getResume(Resume pointer) {
-        return pointer;
+    protected Resume getResume(Resume key) {
+        return key;
     }
 
     @Override
-    protected void deleteResume(Resume pointer) {
-        storage.remove(pointer.getUuid());
+    protected void deleteResume(Resume key) {
+        storage.remove(key.getUuid());
     }
 
     @Override
-    protected Resume getPointer(String uuid) {
+    protected Resume getKey(String uuid) {
         return storage.get(uuid);
     }
 
     @Override
-    protected boolean pointerChecker(Resume index) {
+    protected boolean checkKey(Resume index) {
         return index != null;
     }
 }
