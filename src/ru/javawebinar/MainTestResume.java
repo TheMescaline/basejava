@@ -20,16 +20,18 @@ public class MainTestResume {
         ListSection achievements = new ListSection(new ArrayList<>(Arrays.asList("First achievement", "Second achievement")));
         ListSection qualifications = new ListSection(new ArrayList<>(Arrays.asList("First qualification", "Second qualification")));
 
-        Organization firstOrganization = new Organization(new Contact("Red square", "http://square.com"), DateUtil.of(2009, Month.APRIL), DateUtil.of(2009, Month.MAY),"Seller", "Was a seller in a store.");
-        Organization secondOrganization = new Organization(new Contact("Black Sails"), DateUtil.of(2009, Month.FEBRUARY), DateUtil.of(2009, Month.JUNE), "Worker", "Was a worker");
+        Organization firstOrganization = new Organization(new Contact("Red square", "http://square.com"), Arrays.asList(new Position(DateUtil.of(2009, Month.APRIL), DateUtil.of(2009, Month.MAY),"Seller", "Was a seller in a store.")));
+        Organization secondOrganization = new Organization(new Contact("Black Sails"),
+                Arrays.asList(new Position(DateUtil.of(2009, Month.FEBRUARY), DateUtil.of(2009, Month.JUNE), "Worker", "Was a worker"),
+                        new Position(DateUtil.of(2009, Month.JUNE), DateUtil.of(2009, Month.DECEMBER), "Boss", "Was a Boss")));
 
         List<Organization> organizationsList = new ArrayList<>();
         organizationsList.add(firstOrganization);
         organizationsList.add(secondOrganization);
         OrganizationsSection experience = new OrganizationsSection(organizationsList);
 
-        Organization firstUniversity = new Organization(new Contact("MAI"), DateUtil.of(2012, Month.SEPTEMBER), DateUtil.of(2013, Month.JUNE),"Master degree");
-        Organization secondSchool = new Organization(new Contact("School #2"), DateUtil.of(1996, Month.SEPTEMBER), DateUtil.of(2006, Month.JUNE), "Schoolboy");
+        Organization firstUniversity = new Organization(new Contact("MAI"), Arrays.asList(new Position(DateUtil.of(2012, Month.SEPTEMBER), DateUtil.of(2013, Month.JUNE),"Master degree")));
+        Organization secondSchool = new Organization(new Contact("School #2"), Arrays.asList(new Position(DateUtil.of(1996, Month.SEPTEMBER), DateUtil.of(2006, Month.JUNE), "Schoolboy")));
 
         List<Organization> educationList = new ArrayList<>();
         educationList.add(firstUniversity);

@@ -15,7 +15,7 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected List<Resume> createList() {
+    protected List<Resume> getList() {
         return new ArrayList<>(storage.values());
     }
 
@@ -46,12 +46,12 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected String getIndex(String uuid) {
+    protected String getPointer(String uuid) {
         return uuid;
     }
 
     @Override
-    protected boolean indexChecker(String index) {
+    protected boolean pointerChecker(String index) {
         return storage.containsKey(index);
     }
 }

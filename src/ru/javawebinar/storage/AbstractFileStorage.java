@@ -48,13 +48,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume getResume(File file) {
-        Resume result;
         try {
-            result = readResume(file);
+            return readResume(file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
-        return result;
     }
 
     @Override
@@ -63,23 +61,25 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected File getIndex(String uuid) {
+    protected File getPointer(String uuid) {
         return new File(directory, uuid);
     }
 
     @Override
-    protected boolean indexChecker(File file) {
+    protected boolean pointerChecker(File file) {
         return file.exists();
     }
 
     @Override
-    protected List<Resume> createList() {
+    protected List<Resume> getList() {
         List<Resume> result = new ArrayList<>();
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
                 result.add(getResume(file));
             }
+        } else {
+            throw new RuntimeException("There are no resumes in directory!");
         }
         return result;
     }
@@ -96,9 +96,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        int result = -1;
         String[] names = directory.list();
-        if (names != null) result = names.length;
-        return result;
+        if (names == null) throw new RuntimeException("Directory is empty!");
+        return names.length;
     }
 }

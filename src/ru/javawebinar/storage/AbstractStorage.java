@@ -20,30 +20,30 @@ public abstract class AbstractStorage<P> implements Storage {
 
     protected abstract void deleteResume(P pointer);
 
-    protected abstract P getIndex(String uuid);
+    protected abstract P getPointer(String uuid);
 
-    protected abstract boolean indexChecker(P index);
+    protected abstract boolean pointerChecker(P pointer);
 
-    protected abstract List<Resume> createList();
+    protected abstract List<Resume> getList();
 
     @Override
     public List<Resume> getAllSorted() {
         LOGGER.info("getAllSorted");
-        List<Resume> result = createList();
+        List<Resume> result = getList();
         Collections.sort(result, RESUME_COMPARATOR);
         return result;
     }
 
     @Override
     public void save(Resume resume) {
-        LOGGER.info("Save " + resume);
+        LOGGER.info("Save " + resume.getUuid());
         P pointer = getPointerIfNotExist(resume.getUuid());
         saveResume(resume, pointer);
     }
 
     @Override
     public void update(Resume resume) {
-        LOGGER.info("Update " + resume);
+        LOGGER.info("Update " + resume.getUuid());
         P pointer = getPointerIfExist(resume.getUuid());
         updateResume(resume, pointer);
     }
@@ -63,20 +63,20 @@ public abstract class AbstractStorage<P> implements Storage {
     }
 
     private P getPointerIfNotExist(String uuid) {
-        P index = getIndex(uuid);
-        if (indexChecker(index)) {
+        P pointer = getPointer(uuid);
+        if (pointerChecker(pointer)) {
             LOGGER.warning("Error! Resume " + uuid + " is already in the storage!");
             throw new ExistException(uuid);
         }
-        return index;
+        return pointer;
     }
 
     private P getPointerIfExist(String uuid) {
-        P index = getIndex(uuid);
-        if (!indexChecker(index)) {
+        P pointer = getPointer(uuid);
+        if (!pointerChecker(pointer)) {
             LOGGER.warning("Error! Resume " + uuid + " is not exist!");
             throw new NotExistException(uuid);
         }
-        return index;
+        return pointer;
     }
 }

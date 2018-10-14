@@ -13,7 +13,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected List<Resume> createList() {
+    protected List<Resume> getList() {
         return new ArrayList<>(storage);
     }
 
@@ -43,7 +43,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Integer getIndex(String uuid) {
+    protected Integer getPointer(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -53,7 +53,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean indexChecker(Integer index) {
+    protected boolean pointerChecker(Integer index) {
         return index >= 0;
     }
 }

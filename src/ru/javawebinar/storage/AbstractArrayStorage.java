@@ -21,7 +21,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected List<Resume> createList() {
+    protected List<Resume> getList() {
         return Arrays.asList(Arrays.copyOf(storage, actualStorageSize));
     }
 
@@ -57,7 +57,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean indexChecker(Integer index) {
+    protected boolean pointerChecker(Integer index) {
         return index >= 0;
     }
 }
