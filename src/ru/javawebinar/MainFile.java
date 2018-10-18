@@ -1,30 +1,27 @@
 package ru.javawebinar;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MainFile {
+    private static StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) {
-        String pathname = ".\\src\\ru\\javawebinar\\";
+        String pathname = ".\\src\\";
         File file = new File(pathname);
         printAllFiles(file);
     }
 
     public static void printAllFiles(File file) {
-        String[] names = file.list();
-        if (names != null) {
-            for (String name : names) {
-                File tempFile;
-                try {
-                    String pathname = file.getCanonicalPath() + "\\" + name;
-                    tempFile = new File(pathname);
-                } catch (IOException e) {
-                    throw new RuntimeException("Error", e);
-                }
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File tempFile : files) {
                 if (tempFile.isDirectory()) {
+                    System.out.println( sb.toString() +"Directory: " + tempFile.getName());
+                    sb.append("\t");
                     printAllFiles(tempFile);
+                    sb.deleteCharAt(sb.length() - 1);
                 } else {
-                    System.out.println(name);
+                    System.out.println( sb.toString() +"File: " + tempFile.getName());
                 }
             }
         }
