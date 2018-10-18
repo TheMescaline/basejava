@@ -30,11 +30,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume resume, File file) {
         try {
             file.createNewFile();
-            writeResume(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", resume.getUuid(), e);
+            throw new StorageException("Can not create file" + file.getAbsolutePath(), file.getName(), e);
         }
-
+        updateResume(resume, file);
     }
 
     @Override
@@ -42,7 +41,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             writeResume(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", resume.getUuid(), e);
+            throw new StorageException("File write error!", resume.getUuid(), e);
         }
     }
 
@@ -51,7 +50,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             return readResume(file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("File read error", file.getName(), e);
         }
     }
 
@@ -79,7 +78,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
                 result.add(getResume(file));
             }
         } else {
-            throw new RuntimeException("There are no resumes in directory!");
+            throw new StorageException("There are no resumes in directory!", null);
         }
         return result;
     }
@@ -98,7 +97,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         String[] names = directory.list();
         if (names == null) {
-            throw new RuntimeException("Directory is empty!");
+            throw new StorageException("There are no resumes in directory!", null);
         }
         return names.length;
     }

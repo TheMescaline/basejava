@@ -1,11 +1,7 @@
 package ru.javawebinar;
 
 import ru.javawebinar.model.*;
-import ru.javawebinar.util.DateUtil;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainTestResume {
     public static void main(String[] args) {
@@ -17,33 +13,22 @@ public class MainTestResume {
         testResume.setContact(ContactType.SKYPE, new Contact("test.test", "skype:test.test"));
         testResume.setContact(ContactType.GITHUB, new Contact("TestAccount", "http://github.com/TestAccount"));
 
-        ListSection achievements = new ListSection(new ArrayList<>(Arrays.asList("First achievement", "Second achievement")));
-        ListSection qualifications = new ListSection(new ArrayList<>(Arrays.asList("First qualification", "Second qualification")));
-
-        Organization firstOrganization = new Organization(new Contact("Red square", "http://square.com"), Arrays.asList(new Position(DateUtil.of(2009, Month.APRIL), DateUtil.of(2009, Month.MAY),"Seller", "Was a seller in a store.")));
-        Organization secondOrganization = new Organization(new Contact("Black Sails"),
-                Arrays.asList(new Position(DateUtil.of(2009, Month.FEBRUARY), DateUtil.of(2009, Month.JUNE), "Worker", "Was a worker"),
-                        new Position(DateUtil.of(2009, Month.JUNE), DateUtil.of(2009, Month.DECEMBER), "Boss", "Was a Boss")));
-
-        List<Organization> organizationsList = new ArrayList<>();
-        organizationsList.add(firstOrganization);
-        organizationsList.add(secondOrganization);
-        OrganizationsSection experience = new OrganizationsSection(organizationsList);
-
-        Organization firstUniversity = new Organization(new Contact("MAI"), Arrays.asList(new Position(DateUtil.of(2012, Month.SEPTEMBER), DateUtil.of(2013, Month.JUNE),"Master degree")));
-        Organization secondSchool = new Organization(new Contact("School #2"), Arrays.asList(new Position(DateUtil.of(1996, Month.SEPTEMBER), DateUtil.of(2006, Month.JUNE), "Schoolboy")));
-
-        List<Organization> educationList = new ArrayList<>();
-        educationList.add(firstUniversity);
-        educationList.add(secondSchool);
-        OrganizationsSection education = new OrganizationsSection(educationList);
-
         testResume.setSection(SectionType.PERSONAL, new TextSection("My personal"));
         testResume.setSection(SectionType.OBJECTIVE, new TextSection("My position."));
-        testResume.setSection(SectionType.ACHIEVEMENT, achievements);
-        testResume.setSection(SectionType.QUALIFICATIONS, qualifications);
-        testResume.setSection(SectionType.EXPERIENCE, experience);
-        testResume.setSection(SectionType.EDUCATION, education);
+        testResume.setSection(SectionType.ACHIEVEMENT, new ListSection("First achievement", "Second achievement"));
+        testResume.setSection(SectionType.QUALIFICATIONS, new ListSection("First qualification", "Second qualification"));
+        testResume.setSection(SectionType.EXPERIENCE, new OrganizationsSection(
+                new Organization("Red square", "http://square.com",
+                        new Organization.Position(2009, Month.APRIL, 2009, Month.MAY,"Seller", "Was a seller in a store.")),
+                new Organization("Black Sails", null,
+                        new Organization.Position(2009, Month.FEBRUARY,2009, Month.JUNE, "Worker", "Was a worker"),
+                        new Organization.Position(2009, Month.JUNE, 2009, Month.DECEMBER, "Boss", "Was a Boss"))));
+        testResume.setSection(SectionType.EDUCATION, new OrganizationsSection(
+                new Organization("MAI", null,
+                        new Organization.Position(2012, Month.SEPTEMBER, 2013, Month.JUNE,"Master degree", null)),
+                new Organization("School #2", null,
+                        new Organization.Position(1996, Month.SEPTEMBER, 2006, Month.JUNE, "Schoolboy", null))
+        ));
 
         System.out.println(testResume);
     }

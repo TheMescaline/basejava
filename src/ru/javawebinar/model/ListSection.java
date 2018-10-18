@@ -1,5 +1,6 @@
 package ru.javawebinar.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +10,10 @@ public class ListSection extends Section {
     public ListSection(List<String> list) {
         Objects.requireNonNull(list, "list must not be null");
         this.list = list;
+    }
+
+    public ListSection(String... lines) {
+        this(Arrays.asList(lines));
     }
 
     public List<String> getData() {
