@@ -1,8 +1,9 @@
 package ru.javawebinar.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Contact {
+public class Contact implements Serializable {
     private final String info;
     private String url;
 

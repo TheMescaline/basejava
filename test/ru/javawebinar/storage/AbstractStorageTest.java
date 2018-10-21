@@ -6,12 +6,15 @@ import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
 import ru.javawebinar.model.ResumeTestData;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class AbstractStorageTest {
+    protected final static File STORAGE_DIR = new File("D:/Coding/project/basejava/storage");
+
     protected Storage storage;
     protected int sizeBeforeTest;
     private static final String UUID_1 = "uuid1";

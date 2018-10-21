@@ -1,5 +1,6 @@
 package ru.javawebinar.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -9,7 +10,9 @@ import java.util.Objects;
 import static ru.javawebinar.util.DateUtil.NOW;
 import static ru.javawebinar.util.DateUtil.of;
 
-public class Organization {
+public class Organization implements Serializable {
+    private static final long serialVersiodUID = 1L;
+
     private final Contact contact;
     private final List<Position> positions;
 
@@ -63,7 +66,9 @@ public class Organization {
         return sb.toString();
     }
 
-    public static class Position {
+    public static class Position implements Serializable{
+        private static final long serialVersiodUID = 1L;
+
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String position;
