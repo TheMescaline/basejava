@@ -3,7 +3,7 @@ package ru.javawebinar;
 import ru.javawebinar.model.*;
 import java.time.Month;
 
-public class MainTestResume {
+public class ResumeTestData {
     public static void main(String[] args) {
         Resume testResume = new Resume("test", "Test test");
 

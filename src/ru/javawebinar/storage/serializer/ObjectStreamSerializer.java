@@ -1,4 +1,4 @@
-package ru.javawebinar.storage;
+package ru.javawebinar.storage.serializer;
 
 import ru.javawebinar.exception.StorageException;
 import ru.javawebinar.model.Resume;
@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-public class IOByObjectStream implements IOStrategy {
+public class ObjectStreamSerializer implements SerializerStrategy {
     @Override
     public void writeResume(Resume resume, OutputStream outputStream) throws IOException {
         try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {

@@ -2,16 +2,17 @@ package ru.javawebinar.storage;
 
 import ru.javawebinar.exception.StorageException;
 import ru.javawebinar.model.Resume;
+import ru.javawebinar.storage.serializer.SerializerStrategy;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
-    private final IOStrategy strategy;
+    private final SerializerStrategy strategy;
     private final File directory;
 
-    public FileStorage(File directory, IOStrategy strategy) {
+    public FileStorage(File directory, SerializerStrategy strategy) {
         Objects.requireNonNull(directory, "Directory must mot be null");
         Objects.requireNonNull(strategy, "Strategy must mot be null");
         if (!directory.isDirectory()) {
@@ -76,7 +77,7 @@ public class FileStorage extends AbstractStorage<File> {
                 result.add(getResume(file));
             }
         } else {
-            throw new StorageException("There are no resumes in directory!", null);
+            throw new StorageException("There are no resumes in directory!");
         }
         return result;
     }
@@ -95,7 +96,7 @@ public class FileStorage extends AbstractStorage<File> {
     public int size() {
         String[] names = directory.list();
         if (names == null) {
-            throw new StorageException("There are no resumes in directory!", null);
+            throw new StorageException("There are no resumes in directory!");
         }
         return names.length;
     }

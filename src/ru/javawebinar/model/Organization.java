@@ -1,5 +1,9 @@
 package ru.javawebinar.model;
 
+import ru.javawebinar.util.LocalDateAdapter;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -10,11 +14,15 @@ import java.util.Objects;
 import static ru.javawebinar.util.DateUtil.NOW;
 import static ru.javawebinar.util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersiodUID = 1L;
 
-    private final Contact contact;
-    private final List<Position> positions;
+    private Contact contact;
+    private List<Position> positions;
+
+    public Organization() {
+    }
 
     public Organization(Contact contact, List<Position> positions) {
         Objects.requireNonNull(contact, "contact must not be null");
@@ -66,13 +74,19 @@ public class Organization implements Serializable {
         return sb.toString();
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable{
         private static final long serialVersiodUID = 1L;
 
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String position;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate endDate;
+        private String position;
         private String info;
+
+        public Position() {
+        }
 
         public Position(int startYear, Month startMonth, int endYear, Month endMonth, String position, String info) {
             this(of(startYear, startMonth), of(endYear, endMonth), position, info);

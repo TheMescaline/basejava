@@ -7,7 +7,10 @@ import java.util.Objects;
 public class OrganizationsSection extends Section {
     private static final long serialVersiodUID = 1L;
 
-    private final List<Organization> organizationList;
+    private List<Organization> organizationList;
+
+    public OrganizationsSection() {
+    }
 
     public OrganizationsSection(List<Organization> organizationList) {
         Objects.requireNonNull(organizationList, "list must not be null");

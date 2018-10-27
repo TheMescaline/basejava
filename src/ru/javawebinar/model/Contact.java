@@ -1,11 +1,17 @@
 package ru.javawebinar.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Contact implements Serializable {
-    private final String info;
+    private String info;
     private String url;
+
+    public Contact() {
+    }
 
     public Contact(String info) {
         Objects.requireNonNull(info, "info must not be null");
