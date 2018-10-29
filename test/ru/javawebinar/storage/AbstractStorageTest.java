@@ -1,7 +1,9 @@
 package ru.javawebinar.storage;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractStorageTest {
     protected final static String DIR = "D:/Coding/project/basejava/storage";
     protected final static File STORAGE_DIR = new File(DIR);
