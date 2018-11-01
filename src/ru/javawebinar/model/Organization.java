@@ -43,6 +43,14 @@ public class Organization implements Serializable {
         return contact.getInfo();
     }
 
+    public Contact getContact() {
+        return contact;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,7 +114,7 @@ public class Organization implements Serializable {
             this.info = info;
         }
 
-        public LocalDate getStartDates() {
+        public LocalDate getStartDate() {
             return startDate;
         }
 
@@ -116,6 +124,14 @@ public class Organization implements Serializable {
 
         public String getPosition() {
             return position;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
         }
 
         @Override
