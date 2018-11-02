@@ -5,11 +5,11 @@ import java.time.Month;
 
 public class ResumeDataFiller {
     public static Resume fillResumeWithData(Resume resume, String differenceSuffix) {
-        resume.setContact(ContactType.CELL, new Contact("+7-912-345-67-89" + differenceSuffix));
-        resume.setContact(ContactType.ADDRESS, new Contact("Moscow, Russia" + differenceSuffix));
-        resume.setContact(ContactType.EMAIL, new Contact("test@email.com" + differenceSuffix, "mailto:test@email.com"));
-        resume.setContact(ContactType.SKYPE, new Contact("test.test" + differenceSuffix, "skype:test.test"));
-        resume.setContact(ContactType.GITHUB, new Contact("TestAccount" + differenceSuffix, "http://github.com/TestAccount"));
+        resume.setContact(ContactType.CELL, "+7-912-345-67-89" + differenceSuffix);
+        resume.setContact(ContactType.ADDRESS, "Moscow, Russia" + differenceSuffix);
+        resume.setContact(ContactType.EMAIL, "test@email.com" + differenceSuffix);
+        resume.setContact(ContactType.SKYPE, "test.test" + differenceSuffix);
+        resume.setContact(ContactType.GITHUB, "http://github.com/TestAccount" + differenceSuffix);
 
         resume.setSection(SectionType.PERSONAL, new TextSection("My personal" + differenceSuffix));
         resume.setSection(SectionType.OBJECTIVE, new TextSection("My position." + differenceSuffix));

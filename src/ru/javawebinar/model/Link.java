@@ -6,19 +6,19 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Contact implements Serializable {
+public class Link implements Serializable {
     private String info;
     private String url;
 
-    public Contact() {
+    public Link() {
     }
 
-    public Contact(String info) {
+    public Link(String info) {
         Objects.requireNonNull(info, "info must not be null");
         this.info = info;
     }
 
-    public Contact(String info, String url) {
+    public Link(String info, String url) {
         this(info);
         this.url = url;
     }
@@ -39,18 +39,15 @@ public class Contact implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Contact contact = (Contact) o;
-
-        if (!info.equals(contact.info)) return false;
-        return url != null ? url.equals(contact.url) : contact.url == null;
+        Link link = (Link) o;
+        return Objects.equals(info, link.info) &&
+                Objects.equals(url, link.url);
     }
 
     @Override
     public int hashCode() {
-        int result = info.hashCode();
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        return result;
+
+        return Objects.hash(info, url);
     }
 
     @Override

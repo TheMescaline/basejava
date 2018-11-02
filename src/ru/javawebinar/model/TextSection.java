@@ -27,15 +27,14 @@ public class TextSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TextSection that = (TextSection) o;
-
-        return text.equals(that.text);
+        return Objects.equals(text, that.text);
     }
 
     @Override
     public int hashCode() {
-        return text.hashCode();
+
+        return Objects.hash(text);
     }
 
     @Override

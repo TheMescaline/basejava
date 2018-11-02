@@ -18,9 +18,9 @@ public class DataStreamSerializer implements SerializerStrategy {
         try(DataOutputStream dataOutputStream = new DataOutputStream(outputStream)) {
             dataOutputStream.writeUTF(resume.getUuid());
             dataOutputStream.writeUTF(resume.getFullName());
-            Map<ContactType, Contact> contacts = resume.getContacts();
+            Map<ContactType, String> contacts = resume.getContacts();
             dataOutputStream.writeInt(contacts.size());
-            for (Map.Entry<ContactType, Contact> pair : contacts.entrySet()) {
+            for (Map.Entry<ContactType, String> pair : contacts.entrySet()) {
                 dataOutputStream.writeUTF(pair.getKey().name());
                 writeData(dataOutputStream, pair.getValue());
             }
@@ -56,7 +56,7 @@ public class DataStreamSerializer implements SerializerStrategy {
 
     private <T> void writeData(DataOutputStream dataOutputStream, T object) throws IOException {
         if (object instanceof Organization) {
-            writeData(dataOutputStream, ((Organization) object).getContact());
+            writeData(dataOutputStream, ((Organization) object).getLink());
             writeCollection(dataOutputStream, ((Organization) object).getPositions());
         } else if (object instanceof Organization.Position) {
             dataOutputStream.writeUTF(((Organization.Position) object).getStartDate().toString());
@@ -69,9 +69,9 @@ public class DataStreamSerializer implements SerializerStrategy {
             } else {
                 dataOutputStream.writeBoolean(false);
             }
-        } else if (object instanceof Contact) {
-            dataOutputStream.writeUTF(((Contact) object).getInfo());
-            String url = ((Contact) object).getUrl();
+        } else if (object instanceof Link) {
+            dataOutputStream.writeUTF(((Link) object).getInfo());
+            String url = ((Link) object).getUrl();
             if (url != null) {
                 dataOutputStream.writeBoolean(true);
                 dataOutputStream.writeUTF(url);
@@ -92,11 +92,7 @@ public class DataStreamSerializer implements SerializerStrategy {
             int contactsSize = dataInputStream.readInt();
             for (int i = 0; i < contactsSize; i++) {
                 ContactType type = ContactType.valueOf(dataInputStream.readUTF());
-                Contact contact = new Contact(dataInputStream.readUTF());
-                if (dataInputStream.readBoolean()) {
-                    contact.setUrl(dataInputStream.readUTF());
-                }
-                result.setContact(type, contact);
+                result.setContact(type, dataInputStream.readUTF());
             }
             int sectionsSize = dataInputStream.readInt();
             for (int i = 0; i < sectionsSize; i++) {
@@ -120,9 +116,9 @@ public class DataStreamSerializer implements SerializerStrategy {
                         int organizationSectionSize = dataInputStream.readInt();
                         List<Organization> organizationList = new ArrayList<>();
                         for (int j = 0; j < organizationSectionSize; j++) {
-                            Contact contact = new Contact(dataInputStream.readUTF());
+                            Link link = new Link(dataInputStream.readUTF());
                             if (dataInputStream.readBoolean()) {
-                                contact.setUrl(dataInputStream.readUTF());
+                                link.setUrl(dataInputStream.readUTF());
                             }
                             int positionsListSize = dataInputStream.readInt();
                             List<Organization.Position> positionList = new ArrayList<>();
@@ -137,7 +133,7 @@ public class DataStreamSerializer implements SerializerStrategy {
                                 }
                                 positionList.add(position);
                             }
-                            organizationList.add(new Organization(contact, positionList));
+                            organizationList.add(new Organization(link, positionList));
                         }
                         result.setSection(type, new OrganizationsSection(organizationList));
                         break;

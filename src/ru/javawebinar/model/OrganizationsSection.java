@@ -29,15 +29,14 @@ public class OrganizationsSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         OrganizationsSection that = (OrganizationsSection) o;
-
-        return organizationList.equals(that.organizationList);
+        return Objects.equals(organizationList, that.organizationList);
     }
 
     @Override
     public int hashCode() {
-        return organizationList.hashCode();
+
+        return Objects.hash(organizationList);
     }
 
     @Override

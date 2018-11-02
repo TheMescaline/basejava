@@ -20,7 +20,7 @@ public class Resume implements Serializable {
     // Unique identifier
     private String uuid;
     private String fullName;
-    private Map<ContactType, Contact> contacts = new EnumMap<>(ContactType.class);
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
@@ -37,11 +37,11 @@ public class Resume implements Serializable {
         this.fullName = fullName;
     }
 
-    public void setContact(ContactType type, Contact contact) {
+    public void setContact(ContactType type, String contact) {
         contacts.put(type, contact);
     }
 
-    public Contact getContact(ContactType type) {
+    public String getContact(ContactType type) {
         return contacts.get(type);
     }
 
@@ -61,7 +61,7 @@ public class Resume implements Serializable {
         return fullName;
     }
 
-    public Map<ContactType, Contact> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
@@ -82,6 +82,7 @@ public class Resume implements Serializable {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(uuid, fullName, contacts, sections);
     }
 

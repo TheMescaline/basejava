@@ -18,33 +18,33 @@ import static ru.javawebinar.util.DateUtil.of;
 public class Organization implements Serializable {
     private static final long serialVersiodUID = 1L;
 
-    private Contact contact;
+    private Link link;
     private List<Position> positions;
 
     public Organization() {
     }
 
-    public Organization(Contact contact, List<Position> positions) {
-        Objects.requireNonNull(contact, "contact must not be null");
+    public Organization(Link link, List<Position> positions) {
+        Objects.requireNonNull(link, "link must not be null");
         Objects.requireNonNull(positions, "list of positions must not be null");
-        this.contact = contact;
+        this.link = link;
         this.positions = positions;
     }
 
     public Organization(String info, String url, Position... positions) {
-        this(new Contact(info, url), Arrays.asList(positions));
+        this(new Link(info, url), Arrays.asList(positions));
     }
 
     public String getUrl() {
-        return contact.getUrl();
+        return link.getUrl();
     }
 
     public String getName() {
-        return contact.getInfo();
+        return link.getInfo();
     }
 
-    public Contact getContact() {
-        return contact;
+    public Link getLink() {
+        return link;
     }
 
     public List<Position> getPositions() {
@@ -58,13 +58,13 @@ public class Organization implements Serializable {
 
         Organization that = (Organization) o;
 
-        if (!contact.equals(that.contact)) return false;
+        if (!link.equals(that.link)) return false;
         return positions.equals(that.positions);
     }
 
     @Override
     public int hashCode() {
-        int result = contact.hashCode();
+        int result = link.hashCode();
         result = 31 * result + positions.hashCode();
         return result;
     }
@@ -72,8 +72,8 @@ public class Organization implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(contact.getInfo());
-        String url = contact.getUrl();
+        sb.append(link.getInfo());
+        String url = link.getUrl();
         if (url != null) sb.append("\turl: ").append(url);
         for (Position position : positions) {
             sb.append(position);

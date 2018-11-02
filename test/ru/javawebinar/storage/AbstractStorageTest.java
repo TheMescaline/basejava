@@ -9,7 +9,6 @@ import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.Resume;
 import ru.javawebinar.util.ResumeDataFiller;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,7 +92,7 @@ public class AbstractStorageTest {
 
     @Test
     public void get() {
-        assertGet((Resume) RESUME_2, UUID_2);
+        assertGet(RESUME_2, UUID_2);
     }
 
     @Test(expected = NotExistException.class)
@@ -103,7 +102,7 @@ public class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> sample = new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        List<Resume> sample = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         List<Resume> testArray = storage.getAllSorted();
         assertEquals(sample, testArray);
     }
