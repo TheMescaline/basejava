@@ -55,18 +55,15 @@ public class Organization implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Organization that = (Organization) o;
-
-        if (!link.equals(that.link)) return false;
-        return positions.equals(that.positions);
+        return Objects.equals(link, that.link) &&
+                Objects.equals(positions, that.positions);
     }
 
     @Override
     public int hashCode() {
-        int result = link.hashCode();
-        result = 31 * result + positions.hashCode();
-        return result;
+
+        return Objects.hash(link, positions);
     }
 
     @Override
@@ -111,7 +108,11 @@ public class Organization implements Serializable {
             this.startDate = startDate;
             this.endDate = endDate;
             this.position = position;
-            this.info = info;
+            if (info != null) {
+                this.info = info;
+            } else {
+                this.info = "";
+            }
         }
 
         public LocalDate getStartDate() {
@@ -138,22 +139,17 @@ public class Organization implements Serializable {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-
             Position position1 = (Position) o;
-
-            if (!startDate.equals(position1.startDate)) return false;
-            if (!endDate.equals(position1.endDate)) return false;
-            if (!position.equals(position1.position)) return false;
-            return info != null ? info.equals(position1.info) : position1.info == null;
+            return Objects.equals(startDate, position1.startDate) &&
+                    Objects.equals(endDate, position1.endDate) &&
+                    Objects.equals(position, position1.position) &&
+                    Objects.equals(info, position1.info);
         }
 
         @Override
         public int hashCode() {
-            int result = startDate.hashCode();
-            result = 31 * result + endDate.hashCode();
-            result = 31 * result + position.hashCode();
-            result = 31 * result + (info != null ? info.hashCode() : 0);
-            return result;
+
+            return Objects.hash(startDate, endDate, position, info);
         }
 
         @Override

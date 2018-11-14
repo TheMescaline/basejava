@@ -21,7 +21,7 @@ public class OrganizationsSection extends Section {
         this(Arrays.asList(organizations));
     }
 
-    public List<Organization> getData() {
+    public List<Organization> getOrganizationsList() {
         return organizationList;
     }
 

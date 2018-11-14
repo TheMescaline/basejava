@@ -9,15 +9,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Initial resume class
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
     private static final long serialVersiodUID = 1L;
 
-    // Unique identifier
     private String uuid;
     private String fullName;
     private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
@@ -82,7 +78,6 @@ public class Resume implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(uuid, fullName, contacts, sections);
     }
 
@@ -99,9 +94,4 @@ public class Resume implements Serializable {
         }
         return sb.toString();
     }
-
-//    @Override
-//    public String toString() {
-//        return this.getUuid() + " " + this.getFullName();
-//    }
 }

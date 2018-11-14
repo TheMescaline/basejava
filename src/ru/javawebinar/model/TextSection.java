@@ -19,7 +19,7 @@ public class TextSection extends Section {
         this.text = text;
     }
 
-    public String getData() {
+    public String getText() {
         return text;
     }
 

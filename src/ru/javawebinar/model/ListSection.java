@@ -7,22 +7,22 @@ import java.util.Objects;
 public class ListSection extends Section {
     private static final long serialVersiodUID = 1L;
 
-    private List<String> list;
+    private List<String> listOfLines;
 
     public ListSection() {
     }
 
-    public ListSection(List<String> list) {
-        Objects.requireNonNull(list, "list must not be null");
-        this.list = list;
+    public ListSection(List<String> listOfLines) {
+        Objects.requireNonNull(listOfLines, "listOfLines must not be null");
+        this.listOfLines = listOfLines;
     }
 
     public ListSection(String... lines) {
         this(Arrays.asList(lines));
     }
 
-    public List<String> getData() {
-        return list;
+    public List<String> getListOfLines() {
+        return listOfLines;
     }
 
     @Override
@@ -30,19 +30,19 @@ public class ListSection extends Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ListSection that = (ListSection) o;
-        return Objects.equals(list, that.list);
+        return Objects.equals(listOfLines, that.listOfLines);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(list);
+        return Objects.hash(listOfLines);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (String line : list) {
+        for (String line : listOfLines) {
             sb.append("- ").append(line).append(System.lineSeparator());
         }
         return sb.toString();
