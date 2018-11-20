@@ -1,10 +1,16 @@
 package ru.javawebinar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainConcurrency {
     private static int counter;
+    private static final int THREADS_NUMBER = 10_000;
+    private static final Lock LOCK = new ReentrantLock();
+
     public static void main(String[] args) throws InterruptedException {
         Thread testThread = new Thread() {
             @Override
@@ -19,30 +25,29 @@ public class MainConcurrency {
         }).start();
         System.out.println(testThread.getState());
 
-        List<Thread> list = new ArrayList<>();
-        MainConcurrency mainConcurrency = new MainConcurrency();
-        for (int i = 0; i < 10_000; i++) {
-            Thread thread = new Thread(() -> {
+        final MainConcurrency mainConcurrency = new MainConcurrency();
+
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+            executorService.submit(() -> {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.increment();
                 }
+                latch.countDown();
             });
-            thread.start();
-            list.add(thread);
+
         }
 
-        list.forEach(t -> {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        latch.await();
+        executorService.shutdown();
         System.out.println(counter);
-        LazySingleton.getInstance();
     }
 
-    private synchronized void increment() {
+    private void increment() {
+        LOCK.lock();
         counter++;
+        LOCK.unlock();
     }
 }
