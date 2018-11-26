@@ -30,6 +30,5 @@ public class ResumeTestData {
                         new Organization.Position(1996, Month.SEPTEMBER, 2006, Month.JUNE, "Schoolboy", null))
         ));
 
-        System.out.println(testResume);
     }
 }

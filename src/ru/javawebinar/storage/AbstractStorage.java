@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class AbstractStorage<P> implements Storage {
-    private final static Logger LOGGER = Logger.getLogger(AbstractStorage.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AbstractStorage.class.getName());
     protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     protected abstract void saveResume(Resume resume, P key);

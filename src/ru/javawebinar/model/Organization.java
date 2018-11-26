@@ -16,7 +16,7 @@ import static ru.javawebinar.util.DateUtil.of;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
-    private static final long serialVersiodUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private Link link;
     private List<Position> positions;
@@ -81,7 +81,7 @@ public class Organization implements Serializable {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable{
-        private static final long serialVersiodUID = 1L;
+        private static final long serialVersionUID = 1L;
 
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;

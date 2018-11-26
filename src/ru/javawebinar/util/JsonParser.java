@@ -9,6 +9,10 @@ import java.io.Writer;
 public class JsonParser {
     private static Gson GSON = new GsonBuilder().registerTypeAdapter(Section.class, new JsonSectionAdapter()).create();
 
+    private JsonParser() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static <T> T read(Reader reader, Class<T> tClass) {
         return GSON.fromJson(reader, tClass);
     }

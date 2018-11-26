@@ -12,7 +12,7 @@ import java.util.UUID;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
-    private static final long serialVersiodUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private String uuid;
     private String fullName;

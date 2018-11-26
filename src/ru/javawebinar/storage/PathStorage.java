@@ -70,7 +70,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean checkKey(Path path) {
-        return Files.isRegularFile(path);
+        return path.toFile().exists();
     }
 
     @Override
