@@ -1,11 +1,10 @@
 package ru.javawebinar.util;
 
-import ru.javawebinar.model.*;
-import java.time.Month;
+import ru.javawebinar.model.Resume;
 
 public class ResumeDataFiller {
     public static Resume fillResumeWithData(Resume resume, String differenceSuffix) {
-        resume.setContact(ContactType.CELL, "+7-912-345-67-89" + differenceSuffix);
+        /*resume.setContact(ContactType.CELL, "+7-912-345-67-89" + differenceSuffix);
         resume.setContact(ContactType.ADDRESS, "Moscow, Russia" + differenceSuffix);
         resume.setContact(ContactType.EMAIL, "test@email.com" + differenceSuffix);
         resume.setContact(ContactType.SKYPE, "test.test" + differenceSuffix);
@@ -26,7 +25,7 @@ public class ResumeDataFiller {
                         new Organization.Position(2012, Month.SEPTEMBER, 2013, Month.JUNE,"Master degree" + differenceSuffix, null)),
                 new Organization("School #2" + differenceSuffix, null,
                         new Organization.Position(1996, Month.SEPTEMBER, 2006, Month.JUNE, "Schoolboy" + differenceSuffix, null))
-        ));
+        ));*/
         return resume;
     }
 }
