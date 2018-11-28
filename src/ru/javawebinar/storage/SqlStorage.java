@@ -1,10 +1,8 @@
 package ru.javawebinar.storage;
 
-import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
-import ru.javawebinar.exception.StorageException;
 import ru.javawebinar.model.Resume;
-import ru.javawebinar.util.SqlHelper;
+import ru.javawebinar.sql.SqlHelper;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,16 +46,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        try {
-            sqlHelper.runSqlQueryAndReturn("INSERT INTO resume(uuid, full_name) VALUES (?, ?)", preparedStatement -> {
-                preparedStatement.setString(1, resume.getUuid());
-                preparedStatement.setString(2, resume.getFullName());
-                preparedStatement.execute();
-                return null;
-            });
-        } catch (StorageException e) {
-            throw new ExistException(e.getUuid());
-        }
+        sqlHelper.runSqlQueryAndReturn("INSERT INTO resume(uuid, full_name) VALUES (?, ?)", preparedStatement -> {
+            preparedStatement.setString(1, resume.getUuid());
+            preparedStatement.setString(2, resume.getFullName());
+            preparedStatement.execute();
+            return null;
+        });
     }
 
     @Override
