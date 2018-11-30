@@ -1,16 +1,17 @@
 package ru.javawebinar.util;
 
+import ru.javawebinar.model.ContactType;
 import ru.javawebinar.model.Resume;
 
 public class ResumeDataFiller {
     public static Resume fillResumeWithData(Resume resume, String differenceSuffix) {
-        /*resume.setContact(ContactType.CELL, "+7-912-345-67-89" + differenceSuffix);
-        resume.setContact(ContactType.ADDRESS, "Moscow, Russia" + differenceSuffix);
-        resume.setContact(ContactType.EMAIL, "test@email.com" + differenceSuffix);
-        resume.setContact(ContactType.SKYPE, "test.test" + differenceSuffix);
-        resume.setContact(ContactType.GITHUB, "http://github.com/TestAccount" + differenceSuffix);
+        resume.addContact(ContactType.CELL, "+7-912-345-67-89" + differenceSuffix);
+        resume.addContact(ContactType.ADDRESS, "Moscow, Russia" + differenceSuffix);
+        resume.addContact(ContactType.EMAIL, "test@email.com" + differenceSuffix);
+        resume.addContact(ContactType.SKYPE, "test.test" + differenceSuffix);
+//        resume.addContact(ContactType.GITHUB, "http://github.com/TestAccount" + differenceSuffix);
 
-        resume.setSection(SectionType.PERSONAL, new TextSection("My personal" + differenceSuffix));
+        /*resume.setSection(SectionType.PERSONAL, new TextSection("My personal" + differenceSuffix));
         resume.setSection(SectionType.OBJECTIVE, new TextSection("My position." + differenceSuffix));
         resume.setSection(SectionType.ACHIEVEMENT, new ListSection("First achievement" + differenceSuffix, "Second achievement" + differenceSuffix));
         resume.setSection(SectionType.QUALIFICATIONS, new ListSection("First qualification" + differenceSuffix, "Second qualification" + differenceSuffix));

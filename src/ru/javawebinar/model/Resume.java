@@ -33,7 +33,7 @@ public class Resume implements Serializable {
         this.fullName = fullName;
     }
 
-    public void setContact(ContactType type, String contact) {
+    public void addContact(ContactType type, String contact) {
         contacts.put(type, contact);
     }
 

@@ -7,6 +7,7 @@ import org.junit.runners.MethodSorters;
 import ru.javawebinar.Config;
 import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
+import ru.javawebinar.model.ContactType;
 import ru.javawebinar.model.Resume;
 import ru.javawebinar.util.ResumeDataFiller;
 import java.io.File;
@@ -26,7 +27,7 @@ public class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String NOT_EXISTING_RESUME_UUID = "test";
-    private static final Resume NOT_EXISTING_RESUME = new Resume(NOT_EXISTING_RESUME_UUID, "not existed");
+    private static final Resume NOT_EXISTING_RESUME = ResumeDataFiller.fillResumeWithData(new Resume(NOT_EXISTING_RESUME_UUID, "not existed"), " xxx");
     private static final Resume RESUME_1 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_1, "Alex first"), " #1");
     private static final Resume RESUME_2 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_2, "Billie second"), " #2");
     private static final Resume RESUME_3 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_3, "Charlie third"), " #3");
@@ -65,6 +66,8 @@ public class AbstractStorageTest {
     @Test
     public void update() {
         Resume sample = new Resume(UUID_2, "New name");
+        sample.addContact(ContactType.EMAIL, "sample@email");
+        sample.addContact(ContactType.GITHUB, "sample/github");
         storage.update(sample);
         assertGet(sample, UUID_2);
     }

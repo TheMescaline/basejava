@@ -7,11 +7,11 @@ public class ResumeTestData {
     public static void main(String[] args) {
         Resume testResume = new Resume("test", "Test test");
 
-        testResume.setContact(ContactType.CELL, "+7-912-345-67-89");
-        testResume.setContact(ContactType.ADDRESS, "Moscow, Russia");
-        testResume.setContact(ContactType.EMAIL, "test@email.com");
-        testResume.setContact(ContactType.SKYPE, "test.test");
-        testResume.setContact(ContactType.GITHUB, "http://github.com/TestAccount");
+        testResume.addContact(ContactType.CELL, "+7-912-345-67-89");
+        testResume.addContact(ContactType.ADDRESS, "Moscow, Russia");
+        testResume.addContact(ContactType.EMAIL, "test@email.com");
+        testResume.addContact(ContactType.SKYPE, "test.test");
+        testResume.addContact(ContactType.GITHUB, "http://github.com/TestAccount");
 
         testResume.setSection(SectionType.PERSONAL, new TextSection("My personal"));
         testResume.setSection(SectionType.OBJECTIVE, new TextSection("My position."));

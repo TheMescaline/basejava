@@ -55,7 +55,7 @@ public class DataStreamSerializer implements SerializerStrategy {
     public Resume readResume(InputStream inputStream) throws IOException {
         try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
             Resume result = new Resume(dataInputStream.readUTF(), dataInputStream.readUTF());
-            readMap(dataInputStream, () -> result.setContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()));
+            readMap(dataInputStream, () -> result.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()));
             readMap(dataInputStream, () -> {
                 SectionType type = SectionType.valueOf(dataInputStream.readUTF());
                 switch (type) {
