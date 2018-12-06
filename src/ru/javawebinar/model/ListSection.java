@@ -43,7 +43,7 @@ public class ListSection extends Section {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (String line : listOfLines) {
-            sb.append("- ").append(line).append(System.lineSeparator());
+            sb.append(line).append(System.lineSeparator());
         }
         return sb.toString();
     }
