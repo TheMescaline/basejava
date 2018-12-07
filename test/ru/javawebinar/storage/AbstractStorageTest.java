@@ -23,9 +23,9 @@ public class AbstractStorageTest {
 
     protected Storage storage;
     protected int sizeBeforeTest;
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
+    private static final String UUID_1 = "1d65731a-1ec4-4588-a607-fb681235934b";
+    private static final String UUID_2 = "f5cee95c-d5b6-4d59-8d52-dbc6a6df6754";
+    private static final String UUID_3 = "93279d20-f51a-41e9-a434-45bbf42a2a21";
     private static final String NOT_EXISTING_RESUME_UUID = "test";
     private static final Resume NOT_EXISTING_RESUME = ResumeDataFiller.fillResumeWithData(new Resume(NOT_EXISTING_RESUME_UUID, "not existed"), " xxx");
     private static final Resume RESUME_1 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_1, "Alex first"), " #1");

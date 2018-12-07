@@ -2,6 +2,7 @@ package ru.javawebinar;
 
 import ru.javawebinar.model.*;
 import java.time.Month;
+import java.util.UUID;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -29,6 +30,8 @@ public class ResumeTestData {
                 new Organization("School #2", null,
                         new Organization.Position(1996, Month.SEPTEMBER, 2006, Month.JUNE, "Schoolboy", null))
         ));
+
+        System.out.println(UUID.randomUUID().toString());
 
     }
 }
