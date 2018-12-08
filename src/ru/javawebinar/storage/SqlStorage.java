@@ -37,6 +37,23 @@ public class SqlStorage implements Storage {
         sqlHelper.executeQuery("DELETE FROM resume", PreparedStatement::execute);
     }
 
+//    @Override
+//    public List<Resume> getAllSorted() {
+//        List<Resume> result = new ArrayList<>();
+//        sqlHelper.transactionalExecute(connection -> {
+//            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
+//                ResultSet resultSet = preparedStatement.executeQuery();
+//                while (resultSet.next()) {
+//                    result.add(new Resume(resultSet.getString(1).trim(), resultSet.getString(2)));
+//                }
+//            }
+//            fillResumeGetAllSorted(result, connection, CONTACT, new ContactFiller());
+//            fillResumeGetAllSorted(result, connection, SECTION, new SectionFiller());
+//            return null;
+//        });
+//        return result;
+//    }
+
     @Override
     public List<Resume> getAllSorted() {
         Map<String, Resume> resumes = new LinkedHashMap<>();
