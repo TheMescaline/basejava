@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,19 +39,18 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> result = new ArrayList<>();
-        sqlHelper.transactionalExecute(connection -> {
+        Map<String, Resume> resumes = new LinkedHashMap<>();
+        return sqlHelper.transactionalExecute(connection -> {
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    result.add(new Resume(resultSet.getString(1).trim(), resultSet.getString(2)));
+                    resumes.put(resultSet.getString(1), new Resume(resultSet.getString(1), resultSet.getString(2)));
                 }
             }
-            fillResumeGetAllSorted(result, connection, CONTACT, new ContactFiller());
-            fillResumeGetAllSorted(result, connection, SECTION, new SectionFiller());
-            return null;
+            fillResumeWithContactsGetAllSorted(resumes, connection, new ContactFiller());
+            fillResumeWithSectionsGetAllSorted(resumes, connection, new SectionFiller());
+            return new ArrayList<>(resumes.values());
         });
-        return result;
     }
 
     @Override
@@ -84,8 +84,8 @@ public class SqlStorage implements Storage {
                 preparedStatement.setString(2, resume.getUuid());
                 executeAndCheckIfNotExist(resume.getUuid(), preparedStatement);
             }
-            clearTable(resume, connection, CONTACT);
-            clearTable(resume, connection, SECTION);
+            clearContactTable(resume, connection);
+            clearSectionTable(resume, connection);
             insertContacts(resume, connection);
             insertSections(resume, connection);
             return null;
@@ -104,22 +104,23 @@ public class SqlStorage implements Storage {
                 }
                 resume = new Resume(uuid, resultSet.getString("full_name"));
             }
-            fillResumeGet(connection, uuid, CONTACT, resume, new ContactFiller());
-            fillResumeGet(connection, uuid, SECTION, resume, new SectionFiller());
+            fillResumeWithContacts(connection, resume, new ContactFiller());
+            fillResumeWithSections(connection, resume, new SectionFiller());
             return resume;
+        });
+    }
+
+    @Override
+    public void delete(String uuid) {
+        sqlHelper.executeQuery("DELETE FROM resume WHERE uuid = ?", preparedStatement -> {
+            preparedStatement.setString(1, uuid);
+            executeAndCheckIfNotExist(uuid, preparedStatement);
+            return null;
         });
     }
 
     private interface ResumeFiller {
         void fill(ResultSet resultSet, Resume resume) throws SQLException;
-    }
-
-    private class ContactFiller implements ResumeFiller {
-        @Override
-        public void fill(ResultSet resultSet, Resume resume) throws SQLException {
-            resume.addContact(ContactType.valueOf(resultSet.getString(TYPE)), resultSet.getString(VALUE));
-        }
-
     }
 
     private class SectionFiller implements ResumeFiller {
@@ -139,35 +140,49 @@ public class SqlStorage implements Storage {
                     break;
             }
         }
+    }
+
+    private class ContactFiller implements ResumeFiller {
+        @Override
+        public void fill(ResultSet resultSet, Resume resume) throws SQLException {
+            resume.addContact(ContactType.valueOf(resultSet.getString(TYPE)), resultSet.getString(VALUE));
+        }
 
     }
 
-    @Override
-    public void delete(String uuid) {
-        sqlHelper.executeQuery("DELETE FROM resume WHERE uuid = ?", preparedStatement -> {
-            preparedStatement.setString(1, uuid);
-            executeAndCheckIfNotExist(uuid, preparedStatement);
-            return null;
-        });
-    }
-
-    private void clearTable(Resume resume, Connection connection, String tableName) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " WHERE resume_uuid = ?")) {
+    private void clearContactTable(Resume resume, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
             preparedStatement.setString(1, resume.getUuid());
             preparedStatement.execute();
         }
     }
 
-    private void fillResumeGet(Connection connection, String uuid, String tableName, Resume resume, ResumeFiller filler) throws SQLException {
-        String sqlQuery = "SELECT * FROM resume LEFT JOIN %s ON resume.uuid = %s.resume_uuid WHERE uuid = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlQuery, tableName, tableName))) {
-            preparedStatement.setString(1, uuid);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String type = resultSet.getString(TYPE);
-                if (type != null) {
-                    filler.fill(resultSet, resume);
-                }
+    private void clearSectionTable(Resume resume, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM section WHERE resume_uuid = ?")) {
+            preparedStatement.setString(1, resume.getUuid());
+            preparedStatement.execute();
+        }
+    }
+
+    private void fillResumeWithContacts(Connection connection, Resume resume, ResumeFiller filler) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume LEFT JOIN contact ON resume.uuid = contact.resume_uuid WHERE uuid = ?")) {
+            prepareAndFill(preparedStatement, resume, filler);
+        }
+    }
+
+    private void fillResumeWithSections(Connection connection, Resume resume, ResumeFiller filler) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume LEFT JOIN section ON resume.uuid = section.resume_uuid WHERE uuid = ?")) {
+            prepareAndFill(preparedStatement, resume, filler);
+        }
+    }
+
+    private void prepareAndFill(PreparedStatement preparedStatement, Resume resume, ResumeFiller filler) throws SQLException {
+        preparedStatement.setString(1, resume.getUuid());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            String type = resultSet.getString(TYPE);
+            if (type != null) {
+                filler.fill(resultSet, resume);
             }
         }
     }
@@ -203,15 +218,20 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void fillResumeGetAllSorted(List<Resume> resultList, Connection connection, String tableName, ResumeFiller resumeFiller) throws SQLException {
-        String sqlQuery = "SELECT * FROM %s WHERE resume_uuid = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(String.format(sqlQuery, tableName))) {
-            for (Resume resume : resultList) {
-                preparedStatement.setString(1, resume.getUuid());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    resumeFiller.fill(resultSet, resume);
-                }
+    private void fillResumeWithContactsGetAllSorted(Map<String, Resume> resumes, Connection connection, ResumeFiller resumeFiller) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resumeFiller.fill(resultSet, resumes.get(resultSet.getString("resume_uuid")));
+            }
+        }
+    }
+
+    private void fillResumeWithSectionsGetAllSorted(Map<String, Resume> resumes, Connection connection, ResumeFiller resumeFiller) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resumeFiller.fill(resultSet, resumes.get(resultSet.getString("resume_uuid")));
             }
         }
     }

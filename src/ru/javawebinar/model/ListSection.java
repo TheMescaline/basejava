@@ -41,10 +41,6 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (String line : listOfLines) {
-            sb.append(line).append(System.lineSeparator());
-        }
-        return sb.toString();
+        return String.join(System.lineSeparator(), listOfLines);
     }
 }
