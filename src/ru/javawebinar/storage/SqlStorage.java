@@ -135,7 +135,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    public void fillSections(ResultSet resultSet, Resume resume) throws SQLException {
+    private void fillSections(ResultSet resultSet, Resume resume) throws SQLException {
         SectionType type = SectionType.valueOf(resultSet.getString(TYPE));
         switch (type) {
             case PERSONAL:
@@ -151,7 +151,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    public void fillContacts(ResultSet resultSet, Resume resume) throws SQLException {
+    private void fillContacts(ResultSet resultSet, Resume resume) throws SQLException {
         resume.addContact(ContactType.valueOf(resultSet.getString(TYPE)), resultSet.getString(VALUE));
     }
 
@@ -195,7 +195,7 @@ public class SqlStorage implements Storage {
     }
 
     private void fillResumeWithContacts(Connection connection, Resume resume) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume LEFT JOIN contact ON resume.uuid = contact.resume_uuid WHERE uuid = ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact WHERE resume_uuid = ?")) {
             preparedStatement.setString(1, resume.getUuid());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -208,7 +208,7 @@ public class SqlStorage implements Storage {
     }
 
     private void fillResumeWithSections(Connection connection, Resume resume) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume LEFT JOIN section ON resume.uuid = section.resume_uuid WHERE uuid = ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid = ?")) {
             preparedStatement.setString(1, resume.getUuid());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
