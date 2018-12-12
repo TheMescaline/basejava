@@ -1,8 +1,12 @@
 package ru.javawebinar.storage;
 
 import ru.javawebinar.exception.NotExistException;
-import ru.javawebinar.model.*;
+import ru.javawebinar.model.ContactType;
+import ru.javawebinar.model.Resume;
+import ru.javawebinar.model.Section;
+import ru.javawebinar.model.SectionType;
 import ru.javawebinar.sql.SqlHelper;
+import ru.javawebinar.util.JsonParser;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,8 +16,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SqlStorage implements Storage {
     private static final String TYPE = "type";
@@ -45,8 +47,18 @@ public class SqlStorage implements Storage {
                     resumes.put(resultSet.getString(1), new Resume(resultSet.getString(1), resultSet.getString(2)));
                 }
             }
-            fillResumeWithContactsGetAllSorted(resumes, connection);
-            fillResumeWithSectionsGetAllSorted(resumes, connection);
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    fillContacts(resultSet, resumes.get(resultSet.getString("resume_uuid")));
+                }
+            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    fillSections(resultSet, resumes.get(resultSet.getString("resume_uuid")));
+                }
+            }
             return new ArrayList<>(resumes.values());
         });
     }
@@ -102,8 +114,26 @@ public class SqlStorage implements Storage {
                 }
                 resume = new Resume(uuid, resultSet.getString("full_name"));
             }
-            fillResumeWithContacts(connection, resume);
-            fillResumeWithSections(connection, resume);
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact WHERE resume_uuid = ?")) {
+                preparedStatement.setString(1, resume.getUuid());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String type = resultSet.getString(TYPE);
+                    if (type != null) {
+                        fillContacts(resultSet, resume);
+                    }
+                }
+            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid = ?")) {
+                preparedStatement.setString(1, resume.getUuid());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String type = resultSet.getString(TYPE);
+                    if (type != null) {
+                        fillSections(resultSet, resume);
+                    }
+                }
+            }
             return resume;
         });
     }
@@ -117,42 +147,14 @@ public class SqlStorage implements Storage {
         });
     }
 
-    private void fillResumeWithContactsGetAllSorted(Map<String, Resume> resumes, Connection connection) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact")) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                fillContacts(resultSet, resumes.get(resultSet.getString("resume_uuid")));
-            }
-        }
-    }
-
-    private void fillResumeWithSectionsGetAllSorted(Map<String, Resume> resumes, Connection connection) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section")) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                fillSections(resultSet, resumes.get(resultSet.getString("resume_uuid")));
-            }
-        }
-    }
-
     private void fillSections(ResultSet resultSet, Resume resume) throws SQLException {
         SectionType type = SectionType.valueOf(resultSet.getString(TYPE));
-        switch (type) {
-            case PERSONAL:
-            case OBJECTIVE:
-                resume.setSection(type, new TextSection(resultSet.getString(VALUE)));
-                break;
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-                List<String> list = Stream.of(resultSet.getString(VALUE).split(System.lineSeparator()))
-                        .collect(Collectors.toList());
-                resume.setSection(type, new ListSection(list));
-                break;
-        }
+        resume.setSection(type, JsonParser.read(resultSet.getString(VALUE), Section.class));
     }
 
     private void fillContacts(ResultSet resultSet, Resume resume) throws SQLException {
-        resume.addContact(ContactType.valueOf(resultSet.getString(TYPE)), resultSet.getString(VALUE));
+        ContactType type = ContactType.valueOf(resultSet.getString(TYPE));
+        resume.addContact(type, resultSet.getString(VALUE));
     }
 
     private void insertContacts(Resume resume, Connection connection) throws SQLException {
@@ -167,7 +169,7 @@ public class SqlStorage implements Storage {
     private void insertSections(Resume resume, Connection connection) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO section(resume_uuid, type, value) VALUES (?, ? ,?)")) {
             for (Map.Entry<SectionType, Section> section : resume.getSections().entrySet()) {
-                setQueryValues(resume.getUuid(), section.getKey().name(), section.getValue().toString(), preparedStatement);
+                setQueryValues(resume.getUuid(), section.getKey().name(), JsonParser.write(section.getValue(), Section.class), preparedStatement);
             }
             preparedStatement.executeBatch();
         }
@@ -181,42 +183,17 @@ public class SqlStorage implements Storage {
     }
 
     private void clearContactTable(Resume resume, Connection connection) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
-            preparedStatement.setString(1, resume.getUuid());
-            preparedStatement.execute();
-        }
+        clearAttributes(resume, connection, "DELETE FROM contact WHERE resume_uuid = ?");
     }
 
     private void clearSectionTable(Resume resume, Connection connection) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM section WHERE resume_uuid = ?")) {
+        clearAttributes(resume, connection, "DELETE FROM section WHERE resume_uuid = ?");
+    }
+
+    private void clearAttributes(Resume resume, Connection connection, String s) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(s)) {
             preparedStatement.setString(1, resume.getUuid());
             preparedStatement.execute();
-        }
-    }
-
-    private void fillResumeWithContacts(Connection connection, Resume resume) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact WHERE resume_uuid = ?")) {
-            preparedStatement.setString(1, resume.getUuid());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String type = resultSet.getString(TYPE);
-                if (type != null) {
-                    fillContacts(resultSet, resume);
-                }
-            }
-        }
-    }
-
-    private void fillResumeWithSections(Connection connection, Resume resume) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid = ?")) {
-            preparedStatement.setString(1, resume.getUuid());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String type = resultSet.getString(TYPE);
-                if (type != null) {
-                    fillSections(resultSet, resume);
-                }
-            }
         }
     }
 
