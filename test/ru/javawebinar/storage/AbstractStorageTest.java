@@ -9,28 +9,20 @@ import ru.javawebinar.exception.ExistException;
 import ru.javawebinar.exception.NotExistException;
 import ru.javawebinar.model.ContactType;
 import ru.javawebinar.model.Resume;
-import ru.javawebinar.util.ResumeDataFiller;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static ru.javawebinar.util.TestData.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractStorageTest {
-    protected final static String DIR = Config.getInstance().getStorageDirectoryPath();
-    protected final static File STORAGE_DIR = Config.getInstance().getStorageDirectory();
+    final static String DIR = Config.getInstance().getStorageDirectoryPath();
+    final static File STORAGE_DIR = Config.getInstance().getStorageDirectory();
 
     protected Storage storage;
-    protected int sizeBeforeTest;
-    private static final String UUID_1 = "1d65731a-1ec4-4588-a607-fb681235934b";
-    private static final String UUID_2 = "f5cee95c-d5b6-4d59-8d52-dbc6a6df6754";
-    private static final String UUID_3 = "93279d20-f51a-41e9-a434-45bbf42a2a21";
-    private static final String NOT_EXISTING_RESUME_UUID = "test";
-    private static final Resume NOT_EXISTING_RESUME = ResumeDataFiller.fillResumeWithData(new Resume(NOT_EXISTING_RESUME_UUID, "not existed"), " xxx");
-    private static final Resume RESUME_1 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_1, "Alex first"), " #1");
-    private static final Resume RESUME_2 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_2, "Billie second"), " #2");
-    private static final Resume RESUME_3 = ResumeDataFiller.fillResumeWithData(new Resume(UUID_3, "Charlie third"), " #3");
+    int sizeBeforeTest;
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;

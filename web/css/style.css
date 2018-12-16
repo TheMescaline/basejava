@@ -1,0 +1,56 @@
+header{
+    font-size: 24px;
+    color: azure;
+    background: #8c897b;
+    padding: 5px 20px;
+}
+
+body {
+    padding: auto;
+    background: #c1bda2;
+    font-size: 16px;
+    font-family: "Arial", sans-serif;
+}
+
+footer {
+    padding: 5px 20px;
+    text-align: right;
+    color: azure;
+    background: #4f4d43;
+}
+
+a:link {
+    color: #21201c;
+}
+
+a:visited {
+    color: #e5e2d3;
+}
+
+a:hover {
+    color: azure;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #bcb8a4;
+    border:	4px double black;
+    width: 800px;
+}
+
+dl {
+    background: none repeat scroll 0 0 #908c78;
+    margin: 8px 0;
+    padding: 0;
+}
+
+dt {
+    display: inline-block;
+    width: 170px;
+}
+
+dd {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: top;
+}

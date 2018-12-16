@@ -1,6 +1,7 @@
 package ru.javawebinar.web;
 
 import ru.javawebinar.Config;
+import ru.javawebinar.model.ContactType;
 import ru.javawebinar.model.Resume;
 import ru.javawebinar.storage.Storage;
 import javax.servlet.ServletException;
@@ -8,47 +9,60 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
+    private Storage storage;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Storage sqlStorage = Config.getInstance().getStorage();
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Type", "text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<meta charset=\" utf - 8\">");
-        out.println("<title>table</title>");
-        out.println("<link rel=\" stylesheet\" href=\" style.css\">");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<center>");
-        out.println("<h1>Resumes</h1>");
-        out.println("<table border=\"1\" cellpadding=\"5\">");
-        out.println("<tr>");
-        out.println("<th>UUID</th>");
-        out.println("<th>Full name</th>");
-        out.println("</tr>");
-        List<Resume> listOfResumes = sqlStorage.getAllSorted();
-        for (Resume resume : listOfResumes) {
-            out.println("<tr>");
-            out.println("<td style=\"width: 310px;\">" + resume.getUuid() + "</td>");
-            out.println("<td>" + resume.getFullName() + "</td>");
-            out.println("</tr>");
-        }
-        out.println("</tr>");
-        out.println("</table>");
-        out.println("</center>");
-        out.println("</body>");
-        out.println("</html>");
-        out.close();
+    public void init() throws ServletException {
+        super.init();
+        storage = Config.getInstance().getStorage();
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
+        }
+        Resume resume;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                resume = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal.");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                resume.addContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+        storage.update(resume);
+        response.sendRedirect("resume");
     }
 }
