@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.web.HtmlUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -9,15 +10,20 @@
 </head>
 <jsp:include page="fragments/header.jsp"/>
 <body>
-    <section>
-        <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></h2>
-        <p>
-            <c:forEach var="contactEntry" items="${resume.contacts}">
-                <jsp:useBean id="contactEntry" type="java.util.Map.Entry<ru.javawebinar.model.ContactType, java.lang.String>"/>
-                <%=contactEntry.getKey() + " : " + contactEntry.getValue()%><br/>
-            </c:forEach>
-        </p>
-    </section>
+<section>
+    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></h2>
+    <p>
+        <c:forEach var="contactEntry" items="${resume.contacts}">
+            <jsp:useBean id="contactEntry"
+                         type="java.util.Map.Entry<ru.javawebinar.model.ContactType, java.lang.String>"/>
+    <dl>
+        <dt><strong><%=contactEntry.getKey().getTitle()%></strong></dt>
+        <dd><%=HtmlUtil.printContact(contactEntry.getKey(), contactEntry.getValue())%>
+        </dd>
+    </dl>
+    </c:forEach>
+    </p>
+</section>
 </body>
 <jsp:include page="fragments/footer.jsp"/>
 </html>

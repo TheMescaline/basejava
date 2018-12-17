@@ -10,7 +10,7 @@
 <jsp:include page="fragments/header.jsp"/>
 <body>
 <section>
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table class="center" border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>Full name</th>
             <th>e-mail</th>

@@ -8,49 +8,60 @@ header{
 body {
     padding: auto;
     background: #c1bda2;
-    font-size: 16px;
-    font-family: "Arial", sans-serif;
+    font-size: 18px;
+    font-family: "Calibri Light", sans-serif;
 }
-
 footer {
     padding: 5px 20px;
     text-align: right;
     color: azure;
-    background: #4f4d43;
+    background: #6f6d63;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 a:link {
-    color: #21201c;
+    color: #a24c00;
+    text-decoration: none;
 }
 
 a:visited {
-    color: #e5e2d3;
+    color: #794117;
 }
 
 a:hover {
     color: azure;
 }
 
-table {
+table.center {
+    font-size: 20px;
     border-collapse: collapse;
     background-color: #bcb8a4;
     border:	4px double black;
     width: 800px;
+
+    margin-left:auto;
+    margin-right:auto;
 }
 
 dl {
-    background: none repeat scroll 0 0 #908c78;
-    margin: 8px 0;
-    padding: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    background: none repeat scroll 0 0 #b5b099;
+    padding: 3px 7px;
 }
 
 dt {
     display: inline-block;
-    width: 170px;
+    width: 190px;
+    text-align: right;
 }
 
 dd {
     display: inline-block;
-    margin-left: 8px;
     vertical-align: top;
+    padding-left: 15px;
+    margin: 0;
 }
