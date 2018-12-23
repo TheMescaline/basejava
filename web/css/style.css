@@ -46,6 +46,11 @@ table.center {
     margin-right:auto;
 }
 
+th.alt {
+    padding-left: 180px;
+    text-align: left;
+}
+
 dl {
     margin-top: 3px;
     margin-bottom: 3px;

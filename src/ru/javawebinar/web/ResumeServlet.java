@@ -2,13 +2,18 @@ package ru.javawebinar.web;
 
 import ru.javawebinar.Config;
 import ru.javawebinar.model.ContactType;
+import ru.javawebinar.model.ListSection;
 import ru.javawebinar.model.Resume;
+import ru.javawebinar.model.SectionType;
+import ru.javawebinar.model.TextSection;
 import ru.javawebinar.storage.Storage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -54,12 +59,43 @@ public class ResumeServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
         Resume resume = storage.get(uuid);
         resume.setFullName(fullName);
-        for (ContactType type : ContactType.values()) {
-            String value = request.getParameter(type.name());
+        for (ContactType contactType : ContactType.values()) {
+            String value = request.getParameter(contactType.name());
             if (value != null && value.trim().length() != 0) {
-                resume.addContact(type, value);
+                resume.addContact(contactType, value);
             } else {
-                resume.getContacts().remove(type);
+                resume.getContacts().remove(contactType);
+            }
+        }
+
+        for (SectionType sectionType : SectionType.values()) {
+            switch (sectionType) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    String value = request.getParameter(sectionType.name());
+                    if (value != null && value.trim().length() != 0) {
+                        resume.setSection(sectionType, new TextSection(value));
+                    } else {
+                        resume.getSections().remove(sectionType);
+                    }
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    String[] values = request.getParameterValues(sectionType.name());
+                    if (values != null) {
+                        List<String> list = new ArrayList<>();
+                        for (String line : values) {
+                            if (line.trim().length() != 0) {
+                                list.add(line);
+                            }
+                        }
+                        resume.setSection(sectionType, new ListSection(list));
+                    } else {
+                        resume.getSections().remove(sectionType);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         storage.update(resume);

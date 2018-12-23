@@ -17,11 +17,27 @@
             <jsp:useBean id="contactEntry"
                          type="java.util.Map.Entry<ru.javawebinar.model.ContactType, java.lang.String>"/>
     <dl>
-        <dt><strong><%=contactEntry.getKey().getTitle()%></strong></dt>
+        <dt><strong><%=contactEntry.getKey().getTitle()%>
+        </strong></dt>
         <dd><%=HtmlUtil.printContact(contactEntry.getKey(), contactEntry.getValue())%>
         </dd>
     </dl>
     </c:forEach>
+    <br/>
+    <table>
+        <tbody>
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<ru.javawebinar.model.SectionType, ru.javawebinar.model.Section>"/>
+            <dl>
+                <dt><strong><%=sectionEntry.getKey().getTitle()%>
+                </strong></dt>
+                <dd><%=HtmlUtil.printSection(sectionEntry.getKey(), sectionEntry.getValue())%>
+                </dd>
+            </dl>
+        </c:forEach>
+        </tbody>
+    </table>
     </p>
 </section>
 </body>
