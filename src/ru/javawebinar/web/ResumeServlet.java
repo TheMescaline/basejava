@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -39,6 +37,10 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "create":
+                resume = new Resume("");
+                storage.save(resume);
+                break;
             case "view":
             case "edit":
                 resume = storage.get(uuid);
@@ -72,24 +74,18 @@ public class ResumeServlet extends HttpServlet {
             switch (sectionType) {
                 case PERSONAL:
                 case OBJECTIVE:
-                    String value = request.getParameter(sectionType.name());
-                    if (value != null && value.trim().length() != 0) {
-                        resume.setSection(sectionType, new TextSection(value));
+                    String textValue = request.getParameter(sectionType.name());
+                    if (textValue != null && textValue.trim().length() != 0) {
+                        resume.setSection(sectionType, new TextSection(textValue));
                     } else {
                         resume.getSections().remove(sectionType);
                     }
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    String[] values = request.getParameterValues(sectionType.name());
-                    if (values != null) {
-                        List<String> list = new ArrayList<>();
-                        for (String line : values) {
-                            if (line.trim().length() != 0) {
-                                list.add(line);
-                            }
-                        }
-                        resume.setSection(sectionType, new ListSection(list));
+                    String listValue = request.getParameter(sectionType.name());
+                    if (listValue != null && listValue.trim().length() != 0) {
+                        resume.setSection(sectionType, new ListSection(listValue.split("\r\n")));
                     } else {
                         resume.getSections().remove(sectionType);
                     }

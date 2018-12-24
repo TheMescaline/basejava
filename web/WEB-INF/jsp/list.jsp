@@ -12,8 +12,9 @@
 <section>
     <table class="center" border="1" cellpadding="8" cellspacing="0">
         <tr>
-            <th>Full name</th>
+            <th width="320px">Full name</th>
             <th>e-mail</th>
+            <th>Cell phone</th>
             <th></th>
             <th></th>
         </tr>
@@ -22,11 +23,15 @@
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
                 <td>${resume.getContact(ContactType.EMAIL)}</td>
+                <td>${resume.getContact(ContactType.CELL)}</td>
                 <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
                 <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
             </tr>
         </c:forEach>
-    </table>
+    </table><br/>
+    <div class="but">
+    <button class="btn btn1" type="submit" onclick="window.location.href='resume?uuid=null&action=create'"><strong>Add new resume</strong></button>
+    </div>
 </section>
 </body>
 <jsp:include page="fragments/footer.jsp"/>

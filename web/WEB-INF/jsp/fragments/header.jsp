@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <header>
-    <a href="resume"><strong>Manage resumes</strong></a>
+    <a href="resume"><strong>Resumes list</strong></a>
 </header>
-<hr/>
+<br/>
