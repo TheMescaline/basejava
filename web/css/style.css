@@ -6,7 +6,7 @@ header{
 }
 
 body {
-    padding: auto;
+    /*padding: auto;*/
     background: #c1bda2;
     font-size: 18px;
     font-family: "Calibri Light", sans-serif;
@@ -36,19 +36,31 @@ a:hover {
     color: azure;
 }
 
-table.center {
+.center {
     font-size: 20px;
     border-collapse: collapse;
-    background-color: #bcb8a4;
+
     border:	#615e50;
-    width: 1200px;
+    width: 70%;
 
     margin-left:auto;
     margin-right:auto;
 }
 
-td {
+.color1 {
+    background-color: #bcb8a4;
+}
+
+.color2 {
+    background-color: #b5b099;
+}
+
+td.list {
     padding: 15px;
+}
+
+td.view {
+    padding-left: 15px;
 }
 
 th {
@@ -59,6 +71,10 @@ th {
 th.alt {
     padding-left: 180px;
     text-align: left;
+}
+
+h3 {
+    margin: 20px 0 5px;
 }
 
 dl {
@@ -84,14 +100,30 @@ dd {
 button {
     border: 1px solid #6f6d63;
     background: none;
-    padding: 10px 20px;
-    font-size: 20px;
     font-family: "Calibri Light", sans-serif;;
     cursor: pointer;
-    margin: 10px;
     transition: 0.8s;
     position: relative;
     overflow: hidden;
+}
+
+.lrg {
+    padding: 10px 20px;
+    font-size: 20px;
+    margin: 10px;
+}
+
+.sml {
+    border: 1px solid #6f6d63;
+    background: none;
+    font-family: "Calibri Light", sans-serif;;
+    cursor: pointer;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+    padding: 4px 10px;
+    font-size: 12px;
+    margin: 4px;
 }
 
 .btn1{
@@ -120,12 +152,16 @@ button {
     height: 180%;
 }
 
-input[type="text"] {
+.org {
+   margin: 4px;
+}
+
+input[type="text"], input[type="date"] {
      border: none;
      background-color: #cbc6af;
      padding: 4px;
  }
-input[type="text"]:focus {
+input[type="text"]:focus, input[type="date"]:focus {
     color: #000000;
     border: none;
 }

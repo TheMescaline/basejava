@@ -1,4 +1,4 @@
-package ru.javawebinar.web;
+package ru.javawebinar.util;
 
 import ru.javawebinar.model.*;
 import java.time.LocalDate;
@@ -69,5 +69,13 @@ public class HtmlUtil {
             default:
                     throw new IllegalStateException();
         }
+    }
+
+    public static String getDates(Organization.Position position) {
+        return DateUtil.format(position.getStartDate()) + " - " + DateUtil.format(position.getEndDate());
+    }
+
+    public static boolean isEmpty(String value) {
+        return value == null || value.trim().length() == 0;
     }
 }

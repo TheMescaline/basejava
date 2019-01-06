@@ -14,6 +14,17 @@ import java.util.UUID;
 public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public static final Resume EMPTY = new Resume();
+
+    static {
+        EMPTY.setSection(SectionType.OBJECTIVE, TextSection.EMPTY);
+        EMPTY.setSection(SectionType.PERSONAL, TextSection.EMPTY);
+        EMPTY.setSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.EXPERIENCE, new OrganizationsSection(Organization.EMPTY));
+        EMPTY.setSection(SectionType.EDUCATION, new OrganizationsSection(Organization.EMPTY));
+    }
+
     private String uuid;
     private String fullName;
     private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
@@ -48,6 +59,8 @@ public class Resume implements Serializable {
     public Section getSection(SectionType type) {
         return sections.get(type);
     }
+
+
 
     public String getUuid() {
         return uuid;

@@ -10,7 +10,7 @@
 <jsp:include page="fragments/header.jsp"/>
 <body>
 <section>
-    <table class="center" border="1" cellpadding="8" cellspacing="0">
+    <table class="center color1" border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th width="320px">Full name</th>
             <th>e-mail</th>
@@ -21,16 +21,16 @@
         <c:forEach items="${resumes}" var="resume">
             <jsp:useBean id="resume" type="ru.javawebinar.model.Resume"/>
             <tr>
-                <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-                <td>${resume.getContact(ContactType.EMAIL)}</td>
-                <td>${resume.getContact(ContactType.CELL)}</td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
+                <td class="list"><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                <td class="list">${resume.getContact(ContactType.EMAIL)}</td>
+                <td class="list">${resume.getContact(ContactType.CELL)}</td>
+                <td class="list"><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
+                <td class="list"><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
             </tr>
         </c:forEach>
     </table><br/>
     <div class="but">
-    <button class="btn btn1" type="submit" onclick="window.location.href='resume?uuid=null&action=create'"><strong>Add new resume</strong></button>
+    <button class="btn btn1 lrg" type="submit" onclick="window.location.href='resume?uuid=null&action=create'"><strong>Add new resume</strong></button>
     </div>
 </section>
 </body>
