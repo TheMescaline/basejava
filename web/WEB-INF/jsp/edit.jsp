@@ -50,8 +50,6 @@
                 <c:when test="${sectionType.equals(SectionType.EXPERIENCE) || sectionType.equals(SectionType.EDUCATION)}">
                     <dl>
                         <dt><strong>${sectionType.title}</strong>
-                            <input class=".sml" type="button" onclick="addOrganization('${sectionType}')"
-                                   value="Add Section"></dt>
                         <dd id="${sectionType}">
                             <c:forEach items="${(resume.getSection(sectionType)).getOrganizationsList()}"
                                        var="organization" varStatus="counter">
@@ -79,65 +77,6 @@
 
             </c:choose>
         </c:forEach>
-
-        <script>
-            function addOrganization(elementId) {
-                var div = document.createElement('div');
-
-                var organizationName = document.createElement('input');
-                organizationName.type = "text";
-                organizationName.name = "name";
-                organizationName.size = 45;
-                organizationName.setAttribute("class", "org");
-
-                var url = document.createElement('input');
-                url.type = "text";
-                url.name = elementId + "url";
-                url.size = 81;
-                url.setAttribute("class", "org");
-
-                var startDate = document.createElement('input');
-                startDate.type = "date";
-                startDate.name = "startDate";
-                startDate.setAttribute("class", "org");
-
-                var endDate = document.createElement('input');
-                endDate.type = "date";
-                endDate.name = "endDate";
-                endDate.setAttribute("class", "org");
-
-                var position = document.createElement('input');
-                position.type = "text";
-                position.name = "position";
-                position.setAttribute("class", "org");
-
-                var info = document.createElement('input');
-                info.type = "text";
-                info.name = "info";
-                info.size = 71;
-                info.setAttribute("class", "org");
-
-
-                div.appendChild(document.createTextNode("Название организации"));
-                div.appendChild(organizationName);
-                div.appendChild(document.createTextNode(" Ссылка на сайт"));
-                div.appendChild(url);
-                div.appendChild(document.createElement('br'));
-                div.appendChild(startDate);
-                div.appendChild(document.createTextNode(" - "));
-                div.appendChild(endDate);
-                div.appendChild(document.createTextNode(" Позиция "));
-                div.appendChild(position);
-                div.appendChild(document.createTextNode(" Доп информация "));
-                div.appendChild(info);
-                document.getElementById(elementId).appendChild(div);
-
-                function addPosition() {
-
-                }
-            }
-
-        </script>
 
         <button class="btn btn1 lrg" type="submit"><strong>Save</strong></button>
         <button class="btn btn1 lrg" onclick="window.history.back()"><strong>Cancel</strong></button>
