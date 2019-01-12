@@ -46,7 +46,7 @@
                 <c:choose>
                     <c:when test="${type=='PERSONAL'}">
                         <tr>
-                            <td class="view"><%=((TextSection) section).getText()%></td>
+                            <td class="view" colspan="2"><%=((TextSection) section).getText()%></td>
                         </tr>
                     </c:when>
                     <c:when test="${type=='ACHIEVEMENT'||type=='QUALIFICATIONS'}">
